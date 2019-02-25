@@ -38,7 +38,7 @@ class CPU
 
 		Registro A  = Registro("A");
 		Registro B  = Registro("B");
-		Registro PC = Registro("C");
+		Registro PC = Registro("PC");
 		Registro DR = Registro("DR");
 		Registro MR = Registro("MR");
 		Registro IR = Registro("IR");
@@ -66,8 +66,12 @@ class CPU
 			else if (stato==F2)
 			{
 				IR.MOV_from(DR);
+				char appo=PC.getValore();
+				appo++;
+				PC.WRITE(appo);
 
 				setStato(D1);
+
 			}
 			else if (stato==D1)
 			{
