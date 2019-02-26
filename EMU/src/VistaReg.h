@@ -9,6 +9,10 @@
 #define VISTAREG_H_
 
 #include "Registro.h"
+
+
+#include <string>
+using namespace std;
 class Vista
 {
 
@@ -18,14 +22,29 @@ class VistaReg : Vista
 
 	VistaReg(  Registro & r ): reg(r)
 	{ stato ='-';
-	 // r.vista =  this;
+	reg.reg_is_read.connect( sigc::bind( sigc::mem_fun(this, &VistaReg::on_reg_is_read ), &reg ));
+	reg.reg_is_write.connect( sigc::bind( sigc::mem_fun(this, &VistaReg::on_reg_is_write ), &reg ));
 
 	};
 
-//	string vedi()
-//	{
-//		return ( reg.nome + " " + stato + " " + to_string( (int)reg.getValore()  ) );
-//	};
+	void on_reg_is_read(Registro * R)
+	{
+		stato='R';
+		cout<<vedi()<<endl;
+
+
+	};
+
+	void on_reg_is_write(Registro * R)
+	{	stato='W';
+		cout<<vedi()<<endl;
+	};
+
+
+	string vedi()
+	{
+		return ( reg.nome + " = " + to_string( (int) reg.getValore()) + stato);
+	}
 
 private:
 	Registro  & reg;
