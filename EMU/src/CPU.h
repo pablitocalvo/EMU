@@ -61,19 +61,21 @@ class CPU
 			if (stato=="F1")
 			{
 				MR.MOV_from(PC);  // richiede un byte alla Ram
+
 				IO.set_High();
 				RW.set_High();
-
-
-
 			}
+
 			else if (stato=="F2")
 			{
+				//disabilita gli stati r/W dei componenti coinvolti prima...
+					PC.set_stato('-');
+					MR.set_stato('-');
+
+
 				IR.MOV_from(DR);  // legge il byte dalla Ram
 
-				char appo=PC.getValore(); // PC++
-				appo++;
-				PC.WRITE(appo);
+
 
 				IO.set_Low(); //low or none ??
 				RW.set_Low();
@@ -85,7 +87,9 @@ class CPU
 			{	//for now do nothiung ......
 				// must we inform UI of decoding???
 
-
+				char appo=PC.getValore(); // PC++
+				appo++;
+				PC.WRITE(appo);
 
 			}
 			else if (stato=="D2")
