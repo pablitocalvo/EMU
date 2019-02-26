@@ -23,7 +23,7 @@ class CPU
 {
 	public:
 		CPU()
-		{	stato= "F1";
+		{	stato= "ON";
 
 			CLK.rising.connect( sigc::bind( sigc::mem_fun(this, &CPU::onCLK_rising), &CLK ));
 			CLK.falling.connect( sigc::bind( sigc::mem_fun(this, &CPU::onCLK_falling), &CLK ));
@@ -54,6 +54,10 @@ class CPU
 		void
 		onCLK_rising( PinIN * clk )
 		{
+			if (stato=="ON")
+				setStato("F1");
+
+
 			if (stato=="F1")
 			{
 				MR.MOV_from(PC);  // richiede un byte alla Ram
@@ -66,9 +70,13 @@ class CPU
 			else if (stato=="F2")
 			{
 				IR.MOV_from(DR);  // legge il byte dalla Ram
-				char appo=PC.getValore();
+
+				char appo=PC.getValore(); // PC++
 				appo++;
 				PC.WRITE(appo);
+
+				IO.set_Low(); //low or none ??
+				RW.set_Low();
 
 
 
