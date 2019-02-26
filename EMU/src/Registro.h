@@ -20,6 +20,7 @@ class Registro
 		{
 			valore = 0;
 			nome=n;
+			stato="-"
 		//	vista=NULL;
 		};
 
@@ -59,7 +60,7 @@ class Registro
 			reg_is_write.emit();
 		}
 
-		string nome;
+		string nome,stato ;
 		//Vista * vista;
 
 	private:
