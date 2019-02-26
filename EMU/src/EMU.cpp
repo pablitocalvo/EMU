@@ -39,10 +39,10 @@ m_onCLK_falling(PinIN * clk)
 
 
 int main()  {
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 
-	cpu.CLK.rising.connect( sigc::bind( sigc::ptr_fun( m_onCLK_rising), &cpu.CLK ));
-	cpu.CLK.falling.connect( sigc::bind( sigc::ptr_fun( m_onCLK_falling),  &cpu.CLK ));
+
+//	cpu.CLK.rising.connect( sigc::bind( sigc::ptr_fun( m_onCLK_rising), &cpu.CLK ));
+//	cpu.CLK.falling.connect( sigc::bind( sigc::ptr_fun( m_onCLK_falling),  &cpu.CLK ));
 
 //
 
