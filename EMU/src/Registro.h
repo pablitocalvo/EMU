@@ -42,21 +42,30 @@ class Registro
 		}
 
 		void
-		MOV_from(const Registro & r)
-		{	r.reg_is_read.emit();
-			valore=r.valore;
+		MOV_from(  Registro & r)
+		{
+
+
+			//r.stato='R';
+
+			//r.reg_is_read.emit();
+			valore=r.READ();
+
+			stato='W';
 			this->reg_is_write.emit();
 		}
 
 		char
 		READ()
-		{	reg_is_read.emit();
+		{	stato='R';
+			reg_is_read.emit();
 			return valore;
 		}
 
 		void
 		WRITE(char c)
-		{	valore=c;
+		{	stato='W';
+			valore=c;
 			reg_is_write.emit();
 		}
 
