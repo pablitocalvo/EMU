@@ -60,7 +60,8 @@ class Registro
 			reg_is_write.emit();
 		}
 
-		string nome,stato ;
+		string nome,
+		char stato ;
 		//Vista * vista;
 
 	private:
