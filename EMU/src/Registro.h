@@ -25,9 +25,7 @@ class Registro
 		};
 
 
-		sigc::signal<void> reg_is_read;
-		sigc::signal<void> reg_is_write;
-
+		sigc::signal<void,char> reg_state_changed;
 
 		char
 		getValore() const
@@ -44,30 +42,30 @@ class Registro
 		void
 		MOV_from(  Registro & r)
 		{
-
-
-			//r.stato='R';
-
-			//r.reg_is_read.emit();
-			valore=r.READ();
-
-			stato='W';
-			this->reg_is_write.emit();
+			WRITE(r.READ() );
 		}
 
 		char
 		READ()
-		{	stato='R';
-			reg_is_read.emit();
+		{
+			set_stato('R');
 			return valore;
 		}
 
 		void
 		WRITE(char c)
-		{	stato='W';
+		{
 			valore=c;
-			reg_is_write.emit();
+			set_stato('W');
 		}
+
+
+		void set_stato(char c)
+		{
+			stato=c;
+			reg_state_changed(c);
+		}
+
 
 		string nome;
 		char stato ;

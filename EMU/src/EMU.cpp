@@ -32,7 +32,7 @@ m_onCLK_rising(PinIN *clk)
 void
 m_onCLK_falling(PinIN * clk)
 {
-	cout << " CLK Falling val=" << clk->getValore () << endl;
+	//cout << " CLK Falling val=" << clk->getValore () << endl;
 }
 ;
 

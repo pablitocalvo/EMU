@@ -22,34 +22,42 @@ class VistaReg : Vista
 
 	VistaReg(  Registro & r ): reg(r)
 	{
-		//stato ='-';
-	reg.reg_is_read.connect( sigc::bind( sigc::mem_fun(this, &VistaReg::on_reg_is_read ), &reg ));
-	reg.reg_is_write.connect( sigc::bind( sigc::mem_fun(this, &VistaReg::on_reg_is_write ), &reg ));
+		label="- " + to_string ( (int) r.getValore());
+		//label= '-'+ " " + to_string ( (int) r.getValore());
+
+		reg.reg_state_changed.connect ( sigc::mem_fun(this, &VistaReg::on_reg_state_changed));
+		//reg.reg_state_changed.connect( sigc::bind<0> ( sigc::mem_fun(*this, &VistaReg::on_reg_state_changed ), reg ));
+
+
+
+
+
 
 	};
 
-	void on_reg_is_read(Registro * R)
-	{
-		//stato='R';
-		cout<<vedi()<<endl;
 
+	//void on_reg_state_changed(Registro & r, char c)
+	void on_reg_state_changed( char c)
+			{
+			//cout<< "regstatechanged"<<endl;
+		if (c=='R')
+			label = "- "+ to_string( (int) reg.getValore()) ;
+		else if ( c=='R')label = "R "+ to_string( (int) reg.getValore()) ;
+		else if ( c=='-')label = "- "+ to_string( (int) reg.getValore()) ;
 
-	};
+		};
 
-	void on_reg_is_write(Registro * R)
-	{	//stato='W';
-		cout<<vedi()<<endl;
-	};
 
 
 	string vedi()
 	{
-		return ( reg.nome + " = " + to_string( (int) reg.getValore()) + reg.stato);
+		return ( reg.nome + " = " + label );
 	}
 
 private:
 	Registro  & reg;
 	//char stato ; // r w -;
 
+	string label="  " ;
 };
 #endif /* VISTAREG_H_ */
