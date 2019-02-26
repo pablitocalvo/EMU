@@ -7,18 +7,15 @@
 
 #ifndef VISTAREG_H_
 #define VISTAREG_H_
+#include "Vista.h"
 
-#include "Registro.h"
-class Vista
-{
-
-};
 class VistaReg : Vista
 {public:
 
+
 	VistaReg(  Registro & r ): reg(r)
 	{ stato ='-';
-	 // r.vista =  this;
+	 //r.vista =  this;
 
 	};
 
@@ -30,6 +27,7 @@ class VistaReg : Vista
 private:
 	Registro  & reg;
 	char stato ; // r w -;
+
 
 };
 #endif /* VISTAREG_H_ */

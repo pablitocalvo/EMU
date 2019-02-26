@@ -10,17 +10,16 @@
 #include <sigc++/sigc++.h>
 #include <string>
 using namespace std;
-//#include "VistaReg.h"
+#include "Vista.h"
 
 class Registro
 {
 	public:
-		Registro(){};
 		Registro(string n)
 		{
 			valore = 0;
 			nome=n;
-		//	vista=NULL;
+			vista=NULL;
 		};
 
 
@@ -60,7 +59,7 @@ class Registro
 		}
 
 		string nome;
-		//Vista * vista;
+		Vista * vista;
 
 	private:
 		char valore;
