@@ -58,7 +58,7 @@ class UI
 	void on_reg_is_read(Registro * R)
 	{
 
-		//cout<<"reg "<< R->nome <<" read"<< (int) R->getValore() <<endl;
+		cout<<"reg "<< R->nome <<" read"<< (int) R->getValore() <<endl;
 
 	};
 	void on_reg_is_write(Registro * R)
