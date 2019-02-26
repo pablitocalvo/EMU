@@ -95,7 +95,9 @@ class CPU
 
 
 
+//signal
 
+		sigc::signal<void> cpu_state_changed;
 	private:
 
 		CpuStati stato;
@@ -104,6 +106,7 @@ class CPU
 		setStato( CpuStati s)
 		{
 			stato = s;
+			cpu_state_changed.emit();
 
 
 		}

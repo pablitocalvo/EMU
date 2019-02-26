@@ -15,6 +15,7 @@ using namespace std;
 #include <sigc++/sigc++.h>
 #include <map>
 #include "VistaReg.h"
+#include <iomanip>
 
 
 class UI
@@ -22,6 +23,7 @@ class UI
 	public:
 		UI(CPU & c) : cpu(c)
 		{
+			cpu.cpu_state_changed.connect( sigc::mem_fun(this, &UI::on_cpu_state_changed ));
 
 
 			cpu.IO.setted_to_high.connect(sigc::bind( sigc::mem_fun(this, &UI::on_setted_to_high ), &cpu.IO));
@@ -33,7 +35,20 @@ class UI
 
 
 
-	// handler per Registri
+	// handler per Cpu Changed
+
+	void on_cpu_state_changed()
+	{
+		cout<<"STATO"<<endl;
+
+		cout << setw(10 ) << vA.vedi();
+		cout << setw(10 ) << vPC.vedi();
+		cout << setw(10 ) << vIR.vedi();
+		cout << setw(10 ) << vDR.vedi();
+		cout << setw(10 ) << vMR.vedi()<<endl;
+
+
+	}
 
 
 
