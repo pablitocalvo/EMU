@@ -31,6 +31,9 @@ class UI
 
 			cpu.RW.setted_to_high.connect(sigc::bind( sigc::mem_fun(this, &UI::on_setted_to_high ), &cpu.RW));
 			cpu.RW.setted_to_low.connect(sigc::bind( sigc::mem_fun(this, &UI::on_setted_to_low ), &cpu.RW));
+
+
+			on_cpu_state_changed();
 		};
 
 
@@ -39,7 +42,8 @@ class UI
 
 	void on_cpu_state_changed()
 	{
-		cout<<"STATO"<<endl;
+		cout<<"STATO "<< cpu.stato<< "    CLK =" << cpu.CLK.getValore() << endl;
+
 
 		cout << setw(10 ) << vA.vedi();
 		cout << setw(10 ) << vPC.vedi();
@@ -55,11 +59,11 @@ class UI
 	// handler per PIn OUT
 	void on_setted_to_low(PinOUT * p)
 	{
-		cout<<"Pin "<< p->nome <<" to Low"<< p->valore <<endl;
+		//cout<<"Pin "<< p->nome <<" to Low"<< p->valore <<endl;
 	}
 	void on_setted_to_high(PinOUT * p)
 	{
-		cout<<"Pin "<< p->nome <<" to High"<< p->valore <<endl;
+		//cout<<"Pin "<< p->nome <<" to High"<< p->valore <<endl;
 	};
 
 	private:

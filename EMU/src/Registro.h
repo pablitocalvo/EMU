@@ -20,7 +20,7 @@ class Registro
 		{
 			valore = 0;
 			nome=n;
-			stato="-"
+			stato="-";
 		//	vista=NULL;
 		};
 
