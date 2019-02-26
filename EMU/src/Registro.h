@@ -10,21 +10,19 @@
 #include <sigc++/sigc++.h>
 #include <string>
 using namespace std;
+//#include "VistaReg.h"
 
 class Registro
 {
 	public:
+		Registro(){};
 		Registro(string n)
 		{
 			valore = 0;
 			nome=n;
-		}
-		;
-		virtual
-		~Registro()
-		{
-		}
-		;
+		//	vista=NULL;
+		};
+
 
 		sigc::signal<void> reg_is_read;
 		sigc::signal<void> reg_is_write;
@@ -62,6 +60,7 @@ class Registro
 		}
 
 		string nome;
+		//Vista * vista;
 
 	private:
 		char valore;
