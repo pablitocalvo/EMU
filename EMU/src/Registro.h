@@ -10,22 +10,22 @@
 #include <sigc++/sigc++.h>
 #include <string>
 using namespace std;
-//#include "VistaReg.h"
 
 class Registro
 {
 	public:
-		Registro(){};
 		Registro(string n)
 		{
 			valore = 0;
-			nome=n;
-			stato='-';
-		//	vista=NULL;
-		};
+			nome = n;
+			stato = '-';
+			//	vista=NULL;
+		}
 
+		sigc::signal<void, char> reg_state_changed;
 
-		sigc::signal<void,char> reg_state_changed;
+		string nome;
+		char stato;
 
 		char
 		getValore() const
@@ -40,36 +40,31 @@ class Registro
 		}
 
 		void
-		MOV_from(  Registro & r)
+		MOV_from(Registro & r)
 		{
-			WRITE(r.READ() );
+			WRITE (r.READ ());
 		}
 
 		char
 		READ()
 		{
-			set_stato('R');
+			set_stato ('R');
 			return valore;
 		}
 
 		void
 		WRITE(char c)
 		{
-			valore=c;
-			set_stato('W');
+			valore = c;
+			set_stato ('W');
 		}
 
-
-		void set_stato(char c)
+		void
+		set_stato(char c)
 		{
-			stato=c;
-			reg_state_changed(c);
+			stato = c;
+			reg_state_changed (c);
 		}
-
-
-		string nome;
-		char stato ;
-		//Vista * vista;
 
 	private:
 		char valore;

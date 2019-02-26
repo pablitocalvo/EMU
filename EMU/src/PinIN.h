@@ -9,10 +9,6 @@
 #define PININ_H_
 
 #include <sigc++/sigc++.h>
-#include <iostream>
-#include <string>
-
-using namespace std;
 
 class PinIN
 {
@@ -21,13 +17,9 @@ class PinIN
 		{
 			valore = false;
 		}
-		;
-		virtual
-		~PinIN();
 
 		sigc::signal<void> rising;
 		sigc::signal<void> falling;
-
 
 		void
 		toggle()
