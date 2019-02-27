@@ -10,10 +10,32 @@
 
 class PIN
 {
-	public:
-		PIN();
-		virtual
-		~PIN();
+public:
+    PIN()
+    {
+        stato='-';
+        valore = false;
+    }
+    virtual
+    ~PIN();
+
+private:
+
+    bool valore;
+    char stato;
+
+    bool
+    getValore() const
+    {
+        return valore;
+    }
+
+    void
+    setValore(bool valore)
+    {
+        this->valore = valore;
+    }
+
 };
 
 #endif /* PIN_H_ */
