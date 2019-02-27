@@ -32,9 +32,7 @@ class CPU
 								&CLK));
 
 
-			//provvisoriamente  1 è l'opcode di inc A
 
-			DR.setValore (1);
 		}
 
 		Registro A = Registro ("A");
@@ -62,23 +60,31 @@ class CPU
 
 				IO.set_High ();
 				RW.set_High ();
+
+
 			}
 
 			else if (stato == "F2")
+			{// legge il byte dalla Ram
+				// READ from Data BUS
+				// in DR
+				//provvisoriamente  1 è l'opcode di inc A
+
+							DR.setValore (1);
+			}
+
+			else if (stato == "D1")
 			{
-				//disabilita gli stati r/W dei componenti coinvolti prima...
-				PC.set_stato ('-');
-				MR.set_stato ('-');
-
-				IR.MOV_from (DR);  // legge il byte dalla Ram
-
 				IO.set_Low (); //low or none ??
 				RW.set_Low ();
 
-			}
-			else if (stato == "D1")
-			{	//for now do nothiung ......
+				IR.MOV_from (DR);
+
+				//for now do nothiung ......
 				// must we inform UI of decoding???
+//disabilita gli stati r/W dei componenti coinvolti prima...
+				PC.set_stato ('-');
+				MR.set_stato ('-');
 
 				char appo = PC.getValore (); // PC++
 				appo++;
@@ -148,6 +154,7 @@ class CPU
 			cpu_state_changed.emit ();
 
 		}
+
 
 };
 
