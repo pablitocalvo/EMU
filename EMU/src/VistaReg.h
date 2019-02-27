@@ -34,7 +34,7 @@ class VistaReg
 		//on_reg_state_changed(char c)
 		{
 			//cout<<"orhhdfgd"<<endl;
-			if (c == '.')
+			if (c == '-')
 				label = "- " + to_string ((int) r->getValore ());
 			else if (c == 'W')
 				label = "W " + to_string ((int) r->getValore ());
