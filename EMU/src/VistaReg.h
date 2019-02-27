@@ -24,23 +24,22 @@ class VistaReg
 		{
 			label = "- " + to_string ((int) r.getValore ());
 
-			reg.reg_state_changed.connect (
-					sigc::mem_fun (this, &VistaReg::on_reg_state_changed));
-			//reg.reg_state_changed.connect( sigc::bind<0> ( sigc::mem_fun(*this, &VistaReg::on_reg_state_changed ), reg ));
+			//reg.reg_state_changed.connect (sigc::mem_fun (this, &VistaReg::on_reg_state_changed));
+			reg.reg_state_changed.connect( sigc::bind<0> ( sigc::mem_fun(*this, &VistaReg::on_reg_state_changed ), &reg ));
 
 		}
 
-		//void on_reg_state_changed(Registro & r, char c)
-		void
-		on_reg_state_changed(char c)
+		void on_reg_state_changed(Registro * r, char c)
+		//void
+		//on_reg_state_changed(char c)
 		{
-
-			if (c == 'R')
-				label = "- " + to_string ((int) reg.getValore ());
+			//cout<<"orhhdfgd"<<endl;
+			if (c == '.')
+				label = "- " + to_string ((int) r->getValore ());
+			else if (c == 'W')
+				label = "W " + to_string ((int) r->getValore ());
 			else if (c == 'R')
-				label = "R " + to_string ((int) reg.getValore ());
-			else if (c == '-')
-				label = "- " + to_string ((int) reg.getValore ());
+				label = "R " + to_string ((int) r->getValore ());
 
 		}
 

@@ -25,7 +25,6 @@ main()
 	while (1)
 	{
 		cin >> c;
-		cout << c << endl;
 		if (c == 't')
 			cpu.CLK.toggle ();
 		if (c == 'x')

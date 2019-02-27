@@ -22,7 +22,7 @@ class CPU
 	public:
 		CPU()
 		{
-			stato = "ON";
+			setStato ("ON");
 
 			CLK.rising.connect (
 					sigc::bind (sigc::mem_fun (this, &CPU::onCLK_rising),
@@ -30,6 +30,7 @@ class CPU
 			CLK.falling.connect (
 					sigc::bind (sigc::mem_fun (this, &CPU::onCLK_falling),
 								&CLK));
+
 
 			//provvisoriamente  1 è l'opcode di inc A
 
@@ -53,7 +54,7 @@ class CPU
 		onCLK_rising(PinIN * clk)
 		{
 			if (stato == "ON")
-				setStato ("F1");
+				setStato("F1") ;
 
 			if (stato == "F1")
 			{
@@ -102,7 +103,6 @@ class CPU
 			}
 
 		}
-		;
 
 		void
 		onCLK_falling(PinIN * clk)

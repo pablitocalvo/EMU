@@ -40,6 +40,11 @@ class UI
 					sigc::bind (sigc::mem_fun (this, &UI::on_setted_to_low),
 								&cpu.RW));
 
+
+			cpu.A.reg_state_changed.connect( sigc::bind<0> ( sigc::mem_fun(&vA, &VistaReg::on_reg_state_changed ), &cpu.A ));
+
+
+
 			on_cpu_state_changed ();
 		}
 		;
