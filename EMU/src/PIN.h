@@ -7,35 +7,72 @@
 
 #ifndef PIN_H_
 #define PIN_H_
+#include <sigc++/sigc++.h>
+
+#include <string>
+using namespace std;
 
 class PIN
 {
+
 public:
-    PIN()
+    PIN(string s)
+            : nome (s)
     {
-        stato='-';
+        stato = '-';
         valore = false;
     }
     virtual
     ~PIN();
 
-private:
+    sigc::signal<void, char> pin_state_changed;
+    const string nome;
+protected:
 
-    bool valore;
+
     char stato;
 
+public:
+bool valore;
     bool
-    getValore() const
+    get_valore() const
     {
+        pin_state_changed ('R');
         return valore;
     }
 
+//    void
+//    set_valore(bool valore)
+//    {
+//        this->valore = valore;
+//    }
+
     void
-    setValore(bool valore)
+    set_Low()
     {
-        this->valore = valore;
+        if (valore == true)
+        {
+            valore = false;
+            pin_state_changed ('W');
+        }
     }
 
+    void
+    set_High()
+    {
+        if (valore == false)
+        {
+            valore = true;
+            pin_state_changed ('W');
+        }
+    }
+
+    void toggle()
+    {
+        valore = ! valore ;
+        pin_state_changed ('W');
+    }
 };
+
 
 #endif /* PIN_H_ */

@@ -14,8 +14,10 @@
 using namespace std;
 
 #include "Registro.h"
-#include "PinIN.h"
-#include "PinOUT.h"
+
+#include "PIN.h"
+
+
 
 class CPU
 {
@@ -24,16 +26,12 @@ class CPU
 		{
 			setStato ("ON");
 
-			CLK.rising.connect (
-					sigc::bind (sigc::mem_fun (this, &CPU::onCLK_rising),
+			CLK.pin_state_changed.connect (
+					sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed),
 								&CLK));
-			CLK.falling.connect (
-					sigc::bind (sigc::mem_fun (this, &CPU::onCLK_falling),
-								&CLK));
-
-
-
 		}
+
+		// sigc::signal<void, char> pin_state_changed;
 
 		Registro A = Registro ("A");
 		Registro B = Registro ("B");
@@ -43,13 +41,23 @@ class CPU
 		Registro IR = Registro ("IR");
 		Registro AR = Registro ("AR");
 
-		PinIN CLK = PinIN ();
+		PIN CLK = PIN ("CLK");
 
-		PinOUT RW = PinOUT ("RW");
-		PinOUT IO = PinOUT ("IO");
+		PIN RW = PIN ("RW");
+		PIN IO = PIN ("IO");
+
+
+		void on_CLK_changed( char c ,PIN * clk)
+		{
+		    if (clk->valore)
+		        onCLK_rising(clk);
+		    else onCLK_falling(clk);
+		}
+
+
 
 		void
-		onCLK_rising(PinIN * clk)
+		onCLK_rising(PIN * clk)
 		{
 			if (stato == "ON")
 				setStato("F1") ;
@@ -111,7 +119,7 @@ class CPU
 		}
 
 		void
-		onCLK_falling(PinIN * clk)
+		onCLK_falling(PIN * clk)
 		{
 			if (stato == "F1")
 			{

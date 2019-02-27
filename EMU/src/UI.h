@@ -19,71 +19,60 @@ using namespace std;
 
 class UI
 {
-	public:
-		UI(CPU & c)
-				: cpu (c)
-		{
-			cpu.cpu_state_changed.connect (
-					sigc::mem_fun (this, &UI::on_cpu_state_changed));
+public:
+    UI(CPU & c)
+            : cpu (c)
+    {
+        cpu.cpu_state_changed.connect (
+                sigc::mem_fun (this, &UI::on_cpu_state_changed));
 
-			cpu.IO.setted_to_high.connect (
-					sigc::bind (sigc::mem_fun (this, &UI::on_setted_to_high),
-								&cpu.IO));
-			cpu.IO.setted_to_low.connect (
-					sigc::bind (sigc::mem_fun (this, &UI::on_setted_to_low),
-								&cpu.IO));
+//        cpu.IO.pin_state_changed.connect (
+//                sigc::bind (sigc::mem_fun (this, &UI::on_pin_state_changed),
+//                            &cpu.IO));
+//        cpu.RW.pin_state_changed.connect (
+//                sigc::bind (sigc::mem_fun (this, &UI::on_pin_state_changed),
+//                            &cpu.RW));
 
-			cpu.RW.setted_to_high.connect (
-					sigc::bind (sigc::mem_fun (this, &UI::on_setted_to_high),
-								&cpu.RW));
-			cpu.RW.setted_to_low.connect (
-					sigc::bind (sigc::mem_fun (this, &UI::on_setted_to_low),
-								&cpu.RW));
+//        cpu.A.reg_state_changed.connect (
+//                sigc::bind<0> (
+//                        sigc::mem_fun (&vA, &VistaReg::on_reg_state_changed),
+//                        &cpu.A));
+
+        on_cpu_state_changed ();
+    }
+    ;
+
+    // handler per Cpu Changed
+
+    void
+    on_cpu_state_changed()
+    {
+        cout << "STATO " << cpu.stato << "    CLK =" << cpu.CLK.valore
+                << endl;
+
+        cout << vA.vedi () << "  ";
+        cout << vPC.vedi () << "  ";
+        cout << vIR.vedi () << "  ";
+        cout << vDR.vedi () << "  ";
+        cout << vMR.vedi () << endl;
+
+    }
+
+    void
+    on_pin_state_changed( PIN * p, char c)
+    {
+
+    }
 
 
-			cpu.A.reg_state_changed.connect( sigc::bind<0> ( sigc::mem_fun(&vA, &VistaReg::on_reg_state_changed ), &cpu.A ));
+private:
+    CPU & cpu;
 
-
-
-			on_cpu_state_changed ();
-		}
-		;
-
-		// handler per Cpu Changed
-
-		void
-		on_cpu_state_changed()
-		{
-			cout << "STATO " << cpu.stato << "    CLK =" << cpu.CLK.getValore ()
-					<< endl;
-
-			cout << vA.vedi () << "  ";
-			cout << vPC.vedi () << "  ";
-			cout << vIR.vedi () << "  ";
-			cout << vDR.vedi () << "  ";
-			cout << vMR.vedi () << endl;
-
-		}
-
-		// handler per PIn OUT
-		void
-		on_setted_to_low(PinOUT * p)
-		{
-		}
-		void
-		on_setted_to_high(PinOUT * p)
-		{
-		}
-		;
-
-	private:
-		CPU & cpu;
-
-		VistaReg vA = VistaReg (cpu.A);
-		VistaReg vMR = VistaReg (cpu.MR);
-		VistaReg vIR = VistaReg (cpu.IR);
-		VistaReg vDR = VistaReg (cpu.DR);
-		VistaReg vPC = VistaReg (cpu.PC);
+    VistaReg vA = VistaReg (cpu.A);
+    VistaReg vMR = VistaReg (cpu.MR);
+    VistaReg vIR = VistaReg (cpu.IR);
+    VistaReg vDR = VistaReg (cpu.DR);
+    VistaReg vPC = VistaReg (cpu.PC);
 };
 
 #endif /* UI_H_ */

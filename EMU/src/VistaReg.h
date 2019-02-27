@@ -10,11 +10,8 @@
 
 #include <string>
 #include "Registro.h"
+#include "PIN.h"
 
-class Vista
-{
-
-};
 class VistaReg
 {
 	public:
@@ -54,4 +51,20 @@ class VistaReg
 
 		string label ;
 };
+
+
+class VistaPin
+{
+public:
+    VistaPin( PIN & p ) :  pin(p)
+    {
+        label = "- " + to_string ((int) p.get_valore() );
+    }
+private:
+       PIN & pin ;
+
+       string label ;
+
+};
+
 #endif /* VISTAREG_H_ */
