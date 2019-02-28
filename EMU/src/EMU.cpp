@@ -19,7 +19,7 @@ UI ui = UI (cpu);
 
 int
 main()
-{   cout <<"hdfgdfd"<<endl;
+{  // cout <<"hdfgdfd"<<endl;
     cpu.setStato("ON");
     char c;
 
