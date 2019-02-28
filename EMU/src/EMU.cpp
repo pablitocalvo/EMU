@@ -29,7 +29,7 @@ main()
         if (c == 't')
             cpu.CLK.toggle ();
         if (c == 'x')
-            exit (0);
+        { cout <<"ciaoooooooooooooooo"; exit (0);}
 
     }
 

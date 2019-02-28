@@ -24,7 +24,7 @@ public:
         //reg.reg_state_changed.connect (sigc::mem_fun (this, &VistaReg::on_reg_state_changed));
         reg.reg_state_changed.connect (
                 sigc::bind<0> (
-                        sigc::mem_fun (*this, &VistaReg::on_reg_state_changed),
+                        sigc::mem_fun (this, &VistaReg::on_reg_state_changed),
                         &reg));
 
     }
@@ -62,12 +62,38 @@ public:
             : pin (p)
     {
         label = "- " + to_string ((int) p.get_valore ());
+        p.pin_state_changed.connect (
+                        sigc::bind<0> (
+                                sigc::mem_fun (this, &VistaPin::on_pin_state_changed),
+                                &pin));
     }
 
+
+
+void
+on_pin_state_changed(PIN * p, char c)
+//void
+//on_reg_state_changed(char c)
+{  string s;
+
+    if (p->valore==true)
+            s= "1";
+    else    s= "0";
+
+    if (c == '-')
+        label = string("- ") + s;
+    else if (c == 'W')
+        label = string("W " )+ s;
+    else if (c == 'R')
+        label = string("R ") + s;
+
+}
 public: string  vedi()
        {
            return (pin.nome + " = " + label);
        }
+
+
 
 private:
     PIN & pin;

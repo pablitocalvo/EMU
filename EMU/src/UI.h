@@ -64,11 +64,11 @@ public:
 
     }
 
-    void
-    on_pin_state_changed(PIN * p, char c)
-    {
-
-    }
+//    void
+//    on_pin_state_changed(PIN * p, char c)
+//    {
+//
+//    }
 
 private:
     CPU & cpu;

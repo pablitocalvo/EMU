@@ -27,6 +27,11 @@ public:
 
         CLK.pin_state_changed.connect (
                 sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &CLK));
+        //RW.pin_state_changed.connect (
+        //                     sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &RW));
+        //IO.pin_state_changed.connect (
+         //                    sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &IO));
+
     }
 
     // sigc::signal<void, char> pin_state_changed;
@@ -75,7 +80,7 @@ public:
            // in DR
            //provvisoriamente  1 è l'opcode di inc A
 
-            DR.setValore (1);
+            DR.WRITE(1);
             setStato ("D1");
         }
 
