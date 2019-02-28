@@ -34,7 +34,6 @@ public:
     //void
     //on_reg_state_changed(char c)
     {
-        //cout<<"orhhdfgd"<<endl;
         if (c == '-')
             label = "- " + to_string ((int) r->getValore ());
         else if (c == 'W')
@@ -64,6 +63,12 @@ public:
     {
         label = "- " + to_string ((int) p.get_valore ());
     }
+
+public: string  vedi()
+       {
+           return (pin.nome + " = " + label);
+       }
+
 private:
     PIN & pin;
 

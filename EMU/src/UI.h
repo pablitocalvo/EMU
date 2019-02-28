@@ -47,13 +47,20 @@ public:
     void
     on_cpu_state_changed()
     {
-        cout << "STATO " << cpu.stato << "    CLK =" << cpu.CLK.valore << endl;
+        cout << "STATO " << cpu.stato << "    " << vCLK.vedi()
+                                        << "   " << vIO.vedi()
+                                        << "   " << vRW.vedi()
+
+
+                                << endl;
 
         cout << vA.vedi () << "  ";
         cout << vPC.vedi () << "  ";
         cout << vIR.vedi () << "  ";
         cout << vDR.vedi () << "  ";
         cout << vMR.vedi () << endl;
+
+
 
     }
 
@@ -71,6 +78,13 @@ private:
     VistaReg vIR = VistaReg (cpu.IR);
     VistaReg vDR = VistaReg (cpu.DR);
     VistaReg vPC = VistaReg (cpu.PC);
+
+    VistaPin vCLK = VistaPin(cpu.CLK);
+    VistaPin vRW = VistaPin(cpu.RW);
+    VistaPin vIO = VistaPin(cpu.IO);
+
+
+
 };
 
 #endif /* UI_H_ */
