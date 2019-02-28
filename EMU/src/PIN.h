@@ -22,8 +22,7 @@ public:
         stato = '-';
         valore = false;
     }
-    virtual
-    ~PIN();
+
 
     sigc::signal<void, char> pin_state_changed;
     const string nome;
