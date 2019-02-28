@@ -30,7 +30,7 @@ public:
             valore = false;
         }
     sigc::signal<void, char> pin_state_changed;
-    const string nome;
+    string nome;
 
 
 protected:
