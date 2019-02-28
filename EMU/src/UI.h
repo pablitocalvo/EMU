@@ -47,8 +47,7 @@ public:
     void
     on_cpu_state_changed()
     {
-        cout << "STATO " << cpu.stato << "    CLK =" << cpu.CLK.valore
-                << endl;
+        cout << "STATO " << cpu.stato << "    CLK =" << cpu.CLK.valore << endl;
 
         cout << vA.vedi () << "  ";
         cout << vPC.vedi () << "  ";
@@ -59,11 +58,10 @@ public:
     }
 
     void
-    on_pin_state_changed( PIN * p, char c)
+    on_pin_state_changed(PIN * p, char c)
     {
 
     }
-
 
 private:
     CPU & cpu;

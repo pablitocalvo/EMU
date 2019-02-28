@@ -23,28 +23,28 @@ public:
         valore = false;
     }
 
-
+    PIN(string s, bool valore )
+                : nome (s)
+        {   this->valore = valore;
+            stato = '-';
+            valore = false;
+        }
     sigc::signal<void, char> pin_state_changed;
     const string nome;
-protected:
 
+
+protected:
 
     char stato;
 
 public:
-bool valore;
+    bool valore;
     bool
     get_valore() const
     {
         pin_state_changed ('R');
         return valore;
     }
-
-//    void
-//    set_valore(bool valore)
-//    {
-//        this->valore = valore;
-//    }
 
     void
     set_Low()
@@ -66,12 +66,12 @@ bool valore;
         }
     }
 
-    void toggle()
+    void
+    toggle()
     {
-        valore = ! valore ;
+        valore = !valore;
         pin_state_changed ('W');
     }
 };
-
 
 #endif /* PIN_H_ */

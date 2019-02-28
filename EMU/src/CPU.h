@@ -17,152 +17,149 @@ using namespace std;
 
 #include "PIN.h"
 
-
-
 class CPU
 {
-	public:
-		CPU()
-		{
-			setStato ("ON");
-
-			CLK.pin_state_changed.connect (
-					sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed),
-								&CLK));
-		}
-
-		// sigc::signal<void, char> pin_state_changed;
-
-		Registro A = Registro ("A");
-		Registro B = Registro ("B");
-		Registro PC = Registro ("PC");
-		Registro DR = Registro ("DR");
-		Registro MR = Registro ("MR");
-		Registro IR = Registro ("IR");
-		Registro AR = Registro ("AR");
-
-		PIN CLK = PIN ("CLK");
-
-		PIN RW = PIN ("RW");
-		PIN IO = PIN ("IO");
+public:
+    CPU()
+    {
+        setStato ("ON");
 
 
-		void on_CLK_changed( char c ,PIN * clk)
-		{
-		    if (clk->valore)
-		        onCLK_rising(clk);
-		    else onCLK_falling(clk);
-		}
+        CLK.pin_state_changed.connect (
+                sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &CLK));
+    }
 
+    // sigc::signal<void, char> pin_state_changed;
 
+    Registro A = Registro ("A");
+    Registro B = Registro ("B");
+    Registro PC = Registro ("PC");
+    Registro DR = Registro ("DR");
+    Registro MR = Registro ("MR");
+    Registro IR = Registro ("IR");
+    Registro AR = Registro ("AR");
 
-		void
-		onCLK_rising(PIN * clk)
-		{
-			if (stato == "ON")
-				setStato("F1") ;
+    PIN CLK = PIN ("CLK");
 
-			if (stato == "F1")
-			{
-				MR.MOV_from (PC);  // richiede un byte alla Ram
+    PIN RW = PIN ("RW");
+    PIN IO = PIN ("IO", true);
 
-				IO.set_High ();
-				RW.set_High ();
+    void
+    on_CLK_changed(char c, PIN * clk)
+    {
+        if (clk->valore)
+            onCLK_rising (clk);
+        else
+            onCLK_falling (clk);
+    }
 
+    void
+    onCLK_rising(PIN * clk)
+    {
+//        if (stato == "ON")
+//            setStato ("F1");
 
-			}
+        if (stato == "F1")
+        {
+            MR.MOV_from (PC);  // richiede un byte alla Ram
 
-			else if (stato == "F2")
-			{// legge il byte dalla Ram
-				// READ from Data BUS
-				// in DR
-				//provvisoriamente  1 è l'opcode di inc A
+            IO.set_High ();
+            RW.set_High ();
 
-							DR.setValore (1);
-			}
+        }
 
-			else if (stato == "D1")
-			{
-				IO.set_Low (); //low or none ??
-				RW.set_Low ();
+        else if (stato == "F2")
+        {  // legge il byte dalla Ram
+           // READ from Data BUS
+           // in DR
+           //provvisoriamente  1 è l'opcode di inc A
 
-				IR.MOV_from (DR);
+            DR.setValore (1);
+        }
 
-				//for now do nothiung ......
-				// must we inform UI of decoding???
-//disabilita gli stati r/W dei componenti coinvolti prima...
-				PC.set_stato ('-');
-				MR.set_stato ('-');
+        else if (stato == "D1")
+        {
+            IO.set_Low (); //low or none ??
+            RW.set_Low ();
 
-				char appo = PC.getValore (); // PC++
-				appo++;
-				PC.WRITE (appo);
+            IR.MOV_from (DR);
 
-			}
-			else if (stato == "D2")
-			{	//for now do nothiung ......
-				// must we inform UI of decoding???
+            //for now do nothiung ......
+            // must we inform UI of decoding???
+            //disabilita gli stati r/W dei componenti coinvolti prima...
+            PC.set_stato ('-');
+            MR.set_stato ('-');
 
-			}
-			else if (stato == "E1")
-			{	//for now do nothiung ......
+            char appo = PC.getValore (); // PC++
+            appo++;
+            PC.WRITE (appo);
 
-				if (IR.getValore () == 1)
-				{    // inc A
-					char appo = A.getValore ();
-					appo++;
-					A.WRITE (appo);
+        }
+        else if (stato == "D2")
+        {	//for now do nothiung ......
+            // must we inform UI of decoding???
 
-				}
-			}
+        }
+        else if (stato == "E1")
+        {	//for now do nothiung ......
 
-		}
+            if (IR.getValore () == 1)
+            {    // inc A
+                char appo = A.getValore ();
+                appo++;
+                A.WRITE (appo);
 
-		void
-		onCLK_falling(PIN * clk)
-		{
-			if (stato == "F1")
-			{
-				setStato ("F2");
-			}
-			else if (stato == "F2")
-			{
-				setStato ("D1");
-			}
-			else if (stato == "D1")
-			{
-				setStato ("D2");
-			}
-			else if (stato == "D2")
-			{
-				setStato ("E1");
-			}
-			else if (stato == "E1")
-			{
-				setStato ("E2");
-			}
-			else if (stato == "E2")
-			{
-				setStato ("F1");
-			}
+            }
+        }
 
-		}
-		;
+    }
 
-		string stato;
+    void
+    onCLK_falling(PIN * clk)
+    {
+        if (stato == "ON")
+            setStato ("F1");
+        else if (stato == "F1")
+        {
+            setStato ("F2");
+        }
+        else if (stato == "F2")
+        {
+            setStato ("D1");
+        }
+        else if (stato == "D1")
+        {
+            setStato ("D2");
+        }
+        else if (stato == "D2")
+        {
+            setStato ("E1");
+        }
+        else if (stato == "E1")
+        {
+            setStato ("E2");
+        }
+        else if (stato == "E2")
+        {
+            setStato ("F1");
+        }
 
-		sigc::signal<void> cpu_state_changed;
-	private:
+    }
+    ;
 
-		string next_stato = "";
-		void
-		setStato(string s)
-		{
-			stato = s;
-			cpu_state_changed.emit ();
+    string stato;
 
-		}
+    sigc::signal<void> cpu_state_changed;
+private:
 
+    string next_stato = "";
+    void
+    setStato(string s)
+    {
+        stato = s;
+        cpu_state_changed.emit ();
+
+    }
 
 };
 

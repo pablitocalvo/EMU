@@ -20,17 +20,17 @@ UI ui = UI (cpu);
 int
 main()
 {
-	char c;
+    char c;
 
-	while (1)
-	{
-		cin >> c;
-		if (c == 't')
-			cpu.CLK.toggle ();
-		if (c == 'x')
-			exit (0);
+    while (1)
+    {
+        cin >> c;
+        if (c == 't')
+            cpu.CLK.toggle ();
+        if (c == 'x')
+            exit (0);
 
-	}
+    }
 
-	return 0;
+    return 0;
 }
