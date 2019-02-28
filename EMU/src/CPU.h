@@ -22,8 +22,8 @@ class CPU
 public:
     CPU()
     {
-        setStato ("ON");
-
+        stato="OFF";
+        //TO DO : inserire accensione ....
 
         CLK.pin_state_changed.connect (
                 sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &CLK));
@@ -42,29 +42,30 @@ public:
     PIN CLK = PIN ("CLK");
 
     PIN RW = PIN ("RW");
-    PIN IO = PIN ("IO", true);
+    PIN IO = PIN ("IO", false);
 
     void
     on_CLK_changed(char c, PIN * clk)
     {
-        if (clk->valore)
+        //if (clk->valore)
             onCLK_rising (clk);
-        else
-            onCLK_falling (clk);
+//        else
+//            onCLK_falling (clk);
     }
 
     void
     onCLK_rising(PIN * clk)
     {
-//        if (stato == "ON")
-//            setStato ("F1");
-
-        if (stato == "F1")
+       if (stato == "ON")
+            setStato ("F1");
+       else if (stato == "F1")
         {
             MR.MOV_from (PC);  // richiede un byte alla Ram
 
             IO.set_High ();
             RW.set_High ();
+
+            setStato ("F2");
 
         }
 
@@ -75,6 +76,7 @@ public:
            //provvisoriamente  1 è l'opcode di inc A
 
             DR.setValore (1);
+            setStato ("D1");
         }
 
         else if (stato == "D1")
@@ -94,11 +96,12 @@ public:
             appo++;
             PC.WRITE (appo);
 
+            setStato ("D2");
         }
         else if (stato == "D2")
         {	//for now do nothiung ......
             // must we inform UI of decoding???
-
+            setStato ("E1");
         }
         else if (stato == "E1")
         {	//for now do nothiung ......
@@ -110,6 +113,8 @@ public:
                 A.WRITE (appo);
 
             }
+
+            setStato ("F1");
         }
 
     }
@@ -153,11 +158,11 @@ public:
 private:
 
     string next_stato = "";
-    void
+public:    void
     setStato(string s)
-    {
+    {   cpu_state_changed.emit ();
         stato = s;
-        cpu_state_changed.emit ();
+
 
     }
 

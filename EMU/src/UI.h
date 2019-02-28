@@ -38,7 +38,7 @@ public:
 //                        sigc::mem_fun (&vA, &VistaReg::on_reg_state_changed),
 //                        &cpu.A));
 
-        on_cpu_state_changed ();
+        //on_cpu_state_changed ();
     }
     ;
 
