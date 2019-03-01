@@ -71,7 +71,7 @@ public:
     {
         valore = !valore;
         pin_state_changed ('W');
-    }
+                                             }
 };
 
 #endif /* PIN_H_ */
