@@ -61,10 +61,7 @@ public:
             setStato ("F1");
         else if (stato == "F1")
         {
-            MR.MOV_from (PC);  // richiede un byte alla Ram
-
-            IO.set_High ();
-            RW.set_High ();
+            req_data_from_memory(PC);
 
             setStato ("F2");
 
@@ -138,6 +135,25 @@ public:
         stato = s;
 
     }
+
+private:
+
+    void
+    req_data_from_memory(Registro & raddr)
+    {
+        MR.MOV_from (raddr);  // richiede un byte alla Ram
+        IO.set_High ();
+        RW.set_High ();
+    }
+
+    void post_read_from_memory( Registro & raddr)
+    {
+
+    };
+
+
+    void mov_reg_reg(Registro & rsrc , Registro & rdst){}
+    void post_reg_reg(){}
 
 };
 
