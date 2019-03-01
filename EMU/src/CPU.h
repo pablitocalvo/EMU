@@ -27,10 +27,6 @@ public:
 
         CLK.pin_state_changed.connect (
                 sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &CLK));
-        //RW.pin_state_changed.connect (
-        //                     sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &RW));
-        //IO.pin_state_changed.connect (
-        //                    sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &IO));
 
     }
 
