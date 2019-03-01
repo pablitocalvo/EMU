@@ -22,7 +22,7 @@ class CPU
 public:
     CPU()
     {
-        stato="OFF";
+        stato = "OFF";
         //TO DO : inserire accensione ....
 
         CLK.pin_state_changed.connect (
@@ -30,7 +30,7 @@ public:
         //RW.pin_state_changed.connect (
         //                     sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &RW));
         //IO.pin_state_changed.connect (
-         //                    sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &IO));
+        //                    sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &IO));
 
     }
 
@@ -53,7 +53,7 @@ public:
     on_CLK_changed(char c, PIN * clk)
     {
         //if (clk->valore)
-            onCLK_rising (clk);
+        onCLK_rising (clk);
 //        else
 //            onCLK_falling (clk);
     }
@@ -61,9 +61,9 @@ public:
     void
     onCLK_rising(PIN * clk)
     {
-       if (stato == "ON")
+        if (stato == "ON")
             setStato ("F1");
-       else if (stato == "F1")
+        else if (stato == "F1")
         {
             MR.MOV_from (PC);  // richiede un byte alla Ram
 
@@ -80,7 +80,7 @@ public:
            // in DR
            //provvisoriamente  1 è l'opcode di inc A
 
-            DR.WRITE(1);
+            DR.WRITE (1);
             setStato ("D1");
         }
 
@@ -124,50 +124,22 @@ public:
 
     }
 
-    void
-    onCLK_falling(PIN * clk)
-    {
-        if (stato == "ON")
-            setStato ("F1");
-        else if (stato == "F1")
-        {
-            setStato ("F2");
-        }
-        else if (stato == "F2")
-        {
-            setStato ("D1");
-        }
-        else if (stato == "D1")
-        {
-            setStato ("D2");
-        }
-        else if (stato == "D2")
-        {
-            setStato ("E1");
-        }
-        else if (stato == "E1")
-        {
-            setStato ("E2");
-        }
-        else if (stato == "E2")
-        {
-            setStato ("F1");
-        }
-
-    }
-    ;
+;
 
     string stato;
 
     sigc::signal<void> cpu_state_changed;
+
+
 private:
 
     string next_stato = "";
-public:    void
+public:
+    void
     setStato(string s)
-    {   cpu_state_changed.emit ();
+    {
+        cpu_state_changed.emit ();
         stato = s;
-
 
     }
 
