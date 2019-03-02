@@ -12,66 +12,109 @@
 #include <string>
 using namespace std;
 
+
+typedef enum ValueOfPin {
+    PIN_HIGH = (int)'1',
+    PIN_Z    = (int)'Z',
+    PIN_LOW  = (int)'0'
+};
+
 class PIN
 {
-
 public:
     PIN(string s)
             : nome (s)
     {
-        stato = '-';
-        valore = false;
+        valore = PIN_LOW;
     }
 
-    PIN(string s, bool valore )
+    PIN(string s, ValueOfPin v)
                 : nome (s)
-        {   this->valore = valore;
-            stato = '-';
-            valore = false;
+        {
+            valore = v;
         }
-    sigc::signal<void, char> pin_state_changed;
+
+    sigc::signal<void> pin_writed_to_LOW;
+    sigc::signal<void> pin_writed_to_HIGH;
+    sigc::signal<void> pin_toggled;
+
+
     string nome;
-
-
-protected:
-
-    char stato;
-
+    string val_of_pin_to_string( ValueOfPin v)
+        {
+            if ( v=='1')  return "1";
+            if ( v=='0')  return "0";
+            if ( v=='z')  return "Z";
+            return "ERRORE";
+        }
 public:
-    bool valore;
-    bool
+    ValueOfPin valore;
+
+
+    ValueOfPin
     get_valore() const
     {
-        pin_state_changed ('R');
-        return valore;
+       return valore;
     }
 
     void
     set_Low()
+
     {
-        if (valore == true)
+        if (valore == PIN_HIGH)
         {
-            valore = false;
-            pin_state_changed ('W');
+            valore = PIN_LOW;
+            pin_writed_to_LOW();
         }
+        //cout<<nome + " "+val_of_pin_to_string(valore)+ " set to LOW"<<endl;
     }
 
     void
     set_High()
     {
-        if (valore == false)
+        if (valore == PIN_LOW)
         {
-            valore = true;
-            pin_state_changed ('W');
+            valore = PIN_HIGH;
+            pin_writed_to_HIGH();
         }
+        //cout<<nome + " "+val_of_pin_to_string(valore)+ " set to HIGH"<<endl;
     }
 
     void
     toggle()
     {
-        valore = !valore;
-        pin_state_changed ('W');
-                                             }
+        if (valore == PIN_LOW)
+            set_High();
+        else   set_Low();
+        pin_toggled();
+    }
 };
 
+
+class PIN_3State : PIN
+{
+public:
+    ValueOfPin stato;
+public:
+
+    PIN_3State (string s)
+            : PIN(s)
+    {
+         stato = PIN_LOW;
+    }
+
+
+    ValueOfPin
+    get_valore() const
+    {
+        ////TO DO pin_state_changed ('R');
+        if (stato == PIN_LOW)
+            return PIN_Z;
+        else
+            return this->valore;
+    }
+
+
+
+};
 #endif /* PIN_H_ */
