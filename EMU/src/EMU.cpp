@@ -20,15 +20,13 @@ UI ui = UI (cpu);
 int
 main()
 {  // cout <<"hdfgdfd"<<endl;
-    cpu.setStato("ON");
-    char c;
 
-//    cpu.CLK.set_High();
-//        cpu.setStato("ON");
-//        cpu.CLK.set_Low();
-//            cpu.setStato("ON");
-//
-//    cout<<"pppp"<<endl;
+    ui.on_cpu_state_changed();
+
+    cpu.setStato("ON");
+    ui.on_cpu_state_changed();
+
+    char c;
 
     while (1)
     {
