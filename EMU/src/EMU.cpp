@@ -23,11 +23,18 @@ main()
     cpu.setStato("ON");
     char c;
 
+//    cpu.CLK.set_High();
+//        cpu.setStato("ON");
+//        cpu.CLK.set_Low();
+//            cpu.setStato("ON");
+//
+//    cout<<"pppp"<<endl;
+
     while (1)
     {
         cin >> c;
         if (c == 't')
-            cpu.CLK.toggle ();
+            cpu.CLK.toggle();
         if (c == 'x')
         { cout <<"ciaoooooooooooooooo"; exit (0);}
 
