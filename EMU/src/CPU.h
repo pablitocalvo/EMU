@@ -44,8 +44,11 @@ public:
 
     PIN CLK = PIN ("CLK",PIN_HIGH);
 
-    PIN RW = PIN ("RW");
-    PIN IO = PIN ("IO");
+
+
+    PIN_3State MREQ = PIN_3State ("MREQ");
+    PIN_3State RD = PIN_3State ("RD");
+
 
 
 
@@ -80,8 +83,8 @@ public:
 
         else if (stato == "D1")
         {
-            IO.set_Low (); //low or none ??
-            RW.set_Low ();
+            MREQ.set_High(); //low or none ??
+            RD.set_High();
 
             IR.MOV_from (DR);
 
@@ -133,8 +136,8 @@ private:
     req_data_from_memory(Registro & raddr)
     {
         MR.MOV_from (raddr);  // richiede un byte alla Ram
-        IO.set_High ();
-        RW.set_High ();
+        MREQ.set_High ();
+        RD.set_High ();
     }
 
     void post_read_from_memory( Registro & raddr)

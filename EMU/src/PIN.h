@@ -66,7 +66,7 @@ public:
             valore = PIN_LOW;
             pin_writed_to_LOW();
         }
-        //cout<<nome + " "+val_of_pin_to_string(valore)+ " set to LOW"<<endl;
+       // cout<<nome + " "+val_of_pin_to_string(valore)+ " set to LOW"<<endl;
     }
 
     void
@@ -77,7 +77,7 @@ public:
             valore = PIN_HIGH;
             pin_writed_to_HIGH();
         }
-        //cout<<nome + " "+val_of_pin_to_string(valore)+ " set to HIGH"<<endl;
+       // cout<<nome + " "+val_of_pin_to_string(valore)+ " set to HIGH"<<endl;
     }
 
     void
@@ -91,10 +91,14 @@ public:
 };
 
 
-class PIN_3State : PIN
+class PIN_3State : public PIN
 {
 public:
     ValueOfPin stato;
+
+//    using PIN::set_High;
+//    using PIN::set_Low;
+
 public:
 
     PIN_3State (string s)

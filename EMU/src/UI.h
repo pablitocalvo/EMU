@@ -33,13 +33,9 @@ public:
     void
     on_cpu_state_changed()
     {
-
-
         cout << "STATO " << cpu.stato << "    " << vCLK.vedi()
-                                        << "   " << vIO.vedi()
-                                        << "   " << vRW.vedi()
-
-
+                                        << "   " << vMREQ.vedi()
+                                        << "   " << vRD.vedi()
                                 << endl;
 
         cout << vA.vedi () << "  ";
@@ -61,8 +57,8 @@ private:
     VistaReg vPC = VistaReg (cpu.PC);
 
     VistaPin vCLK = VistaPin(cpu.CLK);
-    VistaPin vRW = VistaPin(cpu.RW);
-    VistaPin vIO = VistaPin(cpu.IO);
+    VistaPin vMREQ = VistaPin( cpu.MREQ);
+    VistaPin vRD = VistaPin( cpu.RD);
 
 
 
