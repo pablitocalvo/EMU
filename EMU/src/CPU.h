@@ -25,12 +25,14 @@ public:
         stato = "OFF";
         //TO DO : inserire accensione ....
 
-        CLK.pin_state_changed.connect (
-                sigc::bind (sigc::mem_fun (this, &CPU::on_CLK_changed), &CLK));
+        CLK.pin_toggled.connect(
+                sigc::bind(
+                        sigc::mem_fun (this, &CPU::on_CLK_toggled),
+                        &CLK));
+
+
 
     }
-
-    // sigc::signal<void, char> pin_state_changed;
 
     Registro A = Registro ("A");
     Registro B = Registro ("B");
@@ -40,22 +42,21 @@ public:
     Registro IR = Registro ("IR");
     Registro AR = Registro ("AR");
 
-    PIN CLK = PIN ("CLK");
+    PIN CLK = PIN ("CLK",PIN_HIGH);
 
     PIN RW = PIN ("RW");
-    PIN IO = PIN ("IO", false);
+    PIN IO = PIN ("IO");
+
+
+
+    string stato;
+
+    sigc::signal<void> cpu_state_changed;
+
+
 
     void
-    on_CLK_changed(char c, PIN * clk)
-    {
-        //if (clk->valore)
-        onCLK_rising (clk);
-//        else
-//            onCLK_falling (clk);
-    }
-
-    void
-    onCLK_rising(PIN * clk)
+    on_CLK_toggled(PIN * clk)
     {
         if (stato == "ON")
             setStato ("F1");
@@ -117,16 +118,6 @@ public:
 
     }
 
-;
-
-    string stato;
-
-    sigc::signal<void> cpu_state_changed;
-
-
-private:
-
-    string next_stato = "";
 public:
     void
     setStato(string s)
