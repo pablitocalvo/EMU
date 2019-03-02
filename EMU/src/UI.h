@@ -12,7 +12,7 @@
 
 #include <iostream>
 #include <string>
-using namespace std;
+//using namespace std;
 
 #include <sigc++/sigc++.h>
 #include "VistaReg.h"
@@ -26,21 +26,7 @@ public:
         cpu.cpu_state_changed.connect (
                 sigc::mem_fun (this, &UI::on_cpu_state_changed));
 
-//        cpu.IO.pin_state_changed.connect (
-//                sigc::bind (sigc::mem_fun (this, &UI::on_pin_state_changed),
-//                            &cpu.IO));
-//        cpu.RW.pin_state_changed.connect (
-//                sigc::bind (sigc::mem_fun (this, &UI::on_pin_state_changed),
-//                            &cpu.RW));
-
-//        cpu.A.reg_state_changed.connect (
-//                sigc::bind<0> (
-//                        sigc::mem_fun (&vA, &VistaReg::on_reg_state_changed),
-//                        &cpu.A));
-
-        //on_cpu_state_changed ();
     }
-    ;
 
     // handler per Cpu Changed
 
@@ -59,18 +45,11 @@ public:
         cout << vIR.vedi () << "  ";
         cout << vDR.vedi () << "  ";
         cout << vMR.vedi () << endl;
-
-
-
     }
 
-//    void
-//    on_pin_state_changed(PIN * p, char c)
-//    {
-//
-//    }
 
 private:
+
     CPU & cpu;
 
     VistaReg vA = VistaReg (cpu.A);
