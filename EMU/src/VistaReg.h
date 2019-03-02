@@ -12,7 +12,18 @@
 #include "Registro.h"
 #include "PIN.h"
 
-class VistaReg
+class Vista
+{
+public:
+    Vista()
+    {attiva=false;}
+
+bool attiva;
+};
+
+
+
+class VistaReg : Vista
 {
 public:
 
@@ -55,39 +66,41 @@ private:
     string label;
 };
 
-class VistaPin
+class VistaPin : Vista
 {
 public:
     VistaPin(PIN & p)
             : pin (p)
     {
-        label = "- " + to_string ((int) p.get_valore ());
-        p.pin_state_changed.connect (
-                        sigc::bind<0> (
-                                sigc::mem_fun (this, &VistaPin::on_pin_state_changed),
-                                &pin));
+
+        if (attiva) label = " [ " + val_of_pin_to_string( p.get_valore())+" ] ";
+        else        label = "   " + val_of_pin_to_string( p.get_valore())+"   ";
+
+
+
+        p.pin_writed_to_HIGH.connect(
+                                sigc::bind<0> (
+                                        sigc::mem_fun (this, &VistaPin::on_pin_writed_to_HIGH),
+                                        &pin));
+        p.pin_writed_to_LOW.connect(
+                                sigc::bind<0> (
+                                        sigc::mem_fun (this, &VistaPin::on_pin_writed_to_LOW),
+                                        &pin));
+   }
+
+
+    void
+    on_pin_writed_to_HIGH(PIN * p)
+    {
+        label = " [ " + val_of_pin_to_string( p->get_valore())+" ] ";
+    }
+
+    void
+    on_pin_writed_to_LOW(PIN * p)
+    {   label = " [ " + val_of_pin_to_string( p->get_valore())+" ] ";
     }
 
 
-
-void
-on_pin_state_changed(PIN * p, char c)
-//void
-//on_reg_state_changed(char c)
-{  string s;
-
-    if (p->valore==true)
-            s= "1";
-    else    s= "0";
-
-    if (c == '-')
-        label = string("- ") + s;
-    else if (c == 'W')
-        label = string("W " )+ s;
-    else if (c == 'R')
-        label = string("R ") + s;
-
-}
 public: string  vedi()
        {
            return (pin.nome + " = " + label);
@@ -99,6 +112,17 @@ private:
     PIN & pin;
 
     string label;
+
+    string stato="-" ;
+
+
+    string val_of_pin_to_string( ValueOfPin v)
+    {
+        if ( v=='1')  return "1";
+        if ( v=='0')  return "0";
+        if ( v=='z')  return "Z";
+        return "ERRORE";
+    }
 
 };
 
