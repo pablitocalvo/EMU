@@ -33,6 +33,8 @@ public:
     void
     on_cpu_state_changed()
     {
+
+
         cout << "STATO " << cpu.stato << "    " << vCLK.vedi()
                                         << "   " << vIO.vedi()
                                         << "   " << vRW.vedi()
