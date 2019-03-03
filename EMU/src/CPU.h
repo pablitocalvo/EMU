@@ -16,6 +16,7 @@ using namespace std;
 #include "Registro.h"
 
 #include "PIN.h"
+#include "PIN3state.h"
 
 class CPU
 {
@@ -37,7 +38,7 @@ public:
     PIN CLK = PIN ("CLK");
 
     PIN_3state MREQ = PIN_3state ("RW");
-    PIN_3state IO = PIN_3state ("IO", false);
+    PIN_3state RD = PIN_3state ("RD");
 
 
     void
@@ -96,11 +97,9 @@ public:
 
 public:    void
     setStato(string s)
-    {   cpu_state_changed.emit ();
+    {
         stato = s;
-
-
-    }
+   }
 
 };
 

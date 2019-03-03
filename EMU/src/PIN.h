@@ -12,20 +12,23 @@
 class PIN
 {
     public:
-        PIN(){set_low();}
+        PIN(string n) : nome(n) {set_low();}
 
         virtual
         ~PIN(){}
 
     private:
         Pin_3state_value valore ;
+        string nome;
 
     public:
 
         void set_high(){valore=PIN_HIGH;}
         void set_low() {valore=PIN_LOW;}
+        void toggle() { if (valore==PIN_HIGH)  set_low(); else set_high() ;}
 
         Pin_3state_value
+
         get_value(){  return ( valore );  }
 
 

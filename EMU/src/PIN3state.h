@@ -14,13 +14,13 @@ class PIN_3state
 {
     public:
 
-        PIN_3state(){ set_low(); disable(); };
+        PIN_3state(string n) : nome(n){ set_low(); disable(); };
         virtual
         ~PIN_3state(){};
 
     private:
         Pin_3state_value valore,en,output ;
-
+        string nome;
     public:
 
         void enable() { en=PIN_HIGH; output=valore;}
