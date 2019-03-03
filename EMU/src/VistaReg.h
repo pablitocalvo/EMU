@@ -67,16 +67,15 @@ private:
 };
 
 class VistaPin : Vista
-{
+{private:
+    PIN & pin;
+    string v_value;
+
 public:
     VistaPin(PIN & p)
             : pin (p)
     {
-
-        if (attiva) label = " [ " + val_of_pin_to_string( p.get_valore())+" ] ";
-        else        label = "   " + val_of_pin_to_string( p.get_valore())+"   ";
-
-
+        v_value = val_of_pin_to_string( p.get_valore());
 
         p.pin_writed_to_HIGH.connect(
                                 sigc::bind<0> (
@@ -86,34 +85,32 @@ public:
                                 sigc::bind<0> (
                                         sigc::mem_fun (this, &VistaPin::on_pin_writed_to_LOW),
                                         &pin));
-   }
+    }
 
 
     void
     on_pin_writed_to_HIGH(PIN * p)
-    {
-        label = " [ " + val_of_pin_to_string( p->get_valore())+" ] ";
+    {   attiva=true;
+        v_value = "1";
     }
 
     void
     on_pin_writed_to_LOW(PIN * p)
-    {   label = " [ " + val_of_pin_to_string( p->get_valore())+" ] ";
+    {   attiva=true;
+        v_value = "0";
     }
 
 
 public: string  vedi()
-       {
-           return (pin.nome + " = " + label);
-       }
+   {    string s;
+       if (attiva)  s= pin.nome + " = [ " + v_value+" ]";
+       else s= pin.nome + " =   " + v_value+"  ";
+       return s;
+   }
 
 
 
-private:
-    PIN & pin;
 
-    string label;
-
-    string stato="-" ;
 
 
     string val_of_pin_to_string( ValueOfPin v)

@@ -94,17 +94,14 @@ public:
 class PIN_3State : public PIN
 {
 public:
-    ValueOfPin stato;
-
-//    using PIN::set_High;
-//    using PIN::set_Low;
+    ValueOfPin enable;
 
 public:
 
     PIN_3State (string s)
             : PIN(s)
     {
-         stato = PIN_LOW;
+         enable = PIN_LOW;
     }
 
 
@@ -112,7 +109,7 @@ public:
     get_valore() const
     {
         ////TO DO pin_state_changed ('R');
-        if (stato == PIN_LOW)
+        if (enable == PIN_LOW)
             return PIN_Z;
         else
             return this->valore;
