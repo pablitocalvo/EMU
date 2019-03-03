@@ -27,14 +27,18 @@ UI ui = UI (cpu);
 int
 main()
 {  // cout <<"hdfgdfd"<<endl;
+    cpu.PC.set_valore(30);
+    cpu.DR.set_valore(1);
     cpu.setStato("ON");
     char c;
-
+    ui.visualizza ();
     while (1)
     {
         cin >> c;
         if (c == 't')
-            cpu.CLK.toggle ();
+        {   cpu.CLK.toggle();cpu.on_CLK_toggle ();
+            ui.visualizza ();
+        }
         if (c == 'x')
         { cout <<"ciaoooooooooooooooo"; exit (0);}
 

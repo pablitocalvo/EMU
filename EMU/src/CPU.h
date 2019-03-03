@@ -18,15 +18,17 @@ using namespace std;
 #include "PIN.h"
 #include "PIN3state.h"
 
+
 class CPU
 {
 public:
     CPU()
     {
-        stato="OFF";
+        stato="OFF";mnemo=" NOP ";
     }
 
-    string stato;
+    string stato,mnemo;
+
 
     Registro A = Registro ("A");
     Registro B = Registro ("B");
@@ -41,56 +43,76 @@ public:
     PIN_3state RD = PIN_3state ("RD");
 
 
+
     void
     on_CLK_toggle()
     {
-       if (stato == "ON")
-            setStato ("F1");
-       else if (stato == "F1")
+        if (stato == "OFF")
+            return;
+        if ((stato == "ON") ||(stato == "E2"))
         {
+            setStato ("F1");
 
+            AR.set_valore (PC.get_valore ());
+
+        }
+        else if (stato == "F1")
+        {
             setStato ("F2");
 
-        }
+            RD.set_high ();
+            RD.enable ();
+            MREQ.set_high ();
+            MREQ.enable ();
 
+        }
         else if (stato == "F2")
-        {  // legge il byte dalla Ram
-           // READ from Data BUS
-           // in DR
-           //provvisoriamente  1 è l'opcode di inc A
+        {
+            setStato ("F3");
+            //non fa nioente wait per RAM (pone DR= ram(addr)
 
-
-            setStato ("D1");
         }
+        else if (stato == "F3")
+        {
+            setStato ("F4");
 
+            RD.set_low ();
+            RD.enable ();
+            MREQ.set_low ();
+            MREQ.enable ();
+
+        }
+        else if (stato == "F4")
+        {
+            setStato ("D1");
+
+            IR.set_valore (DR.get_valore ());
+
+        }
         else if (stato == "D1")
         {
-
-
-            //for now do nothiung ......
-            // must we inform UI of decoding???
-            //disabilita gli stati r/W dei componenti coinvolti prima...
-
             setStato ("D2");
+            //DECODING ISTRUZIONE
+            execute( IR.get_valore ());
         }
         else if (stato == "D2")
-        {	//for now do nothiung ......
-            // must we inform UI of decoding???
+        {
             setStato ("E1");
+
+            execute( IR.get_valore ());
+            //EXECUTING INSTRUCTION
+//            if (IR.get_valore () == 1)
+//            {    // inc A
+//                char appo = A.get_valore ();
+//                appo++;
+//                A.set_valore (appo);
+//            }
         }
         else if (stato == "E1")
-        {	//for now do nothiung ......
-
-            if (IR.get_valore () == 1)
-            {    // inc A
-                char appo = A.get_valore ();
-                appo++;
-                A.set_valore(appo);
-
-            }
-
-            setStato ("F1");
+        {
+            setStato ("E2");
         }
+
 
     }
 
@@ -100,6 +122,39 @@ public:    void
     {
         stato = s;
    }
+
+
+
+private:
+ void execute( char opcode)
+ {
+     if (opcode==1)
+     {    if (stato=="D2")
+             {     mnemo = " INC A ";
+             }
+             else if (stato=="E1")
+             {    // inc A
+                             char appo = A.get_valore ();
+                             appo++;
+                             A.set_valore (appo);
+             }
+     }
+
+     if (opcode==2)
+     {    if (stato=="D2")
+                  {     mnemo = " INC B ";
+                  }
+                  else if (stato=="E1")
+                  {    // inc B
+                              char appo = B.get_valore ();
+                              appo++;
+                              B.set_valore (appo);
+                  }
+     }
+
+
+
+ }
 
 };
 
