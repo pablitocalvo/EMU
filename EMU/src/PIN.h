@@ -94,8 +94,9 @@ public:
 class PIN_3State : public PIN
 {
 public:
-    ValueOfPin enable;
-
+    ValueOfPin output,enable;
+    sigc::signal<void> pin_enabled;
+    sigc::signal<void> pin_disabled;
 public:
 
     PIN_3State (string s)
@@ -104,6 +105,21 @@ public:
          enable = PIN_LOW;
     }
 
+    void enabled()
+    {
+        enable=PIN_HIGH;
+        output=valore;
+        pin_enabled();
+
+    }
+
+    void disabled()
+    {
+        enable=PIN_LOW;
+        output=PIN_Z;
+        pin_disabled();
+
+    }
 
     ValueOfPin
     get_valore() const
