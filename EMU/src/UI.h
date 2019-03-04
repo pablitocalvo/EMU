@@ -13,12 +13,15 @@ class UI
 public:
     UI(CPU & c)
             : cpu (c), vCLK(VistaPin( c.CLK ) )
-    { }
-
+    {
+        cpu.cpu_state_changed.connect (
+            sigc::mem_fun (this, &UI::on_cpu_state_changed));
+    }
+    void on_cpu_state_changed(){ visualizza();}
     void
     visualizza()
-    {  cout<<pin_state_to_string (cpu.CLK.get_value())<<endl;;
-        cout << "STATO " << cpu.stato
+    {  //cout<<pin_state_to_string (cpu.CLK.get_value())<<endl;;
+        cout << "STATO " << cpu.stato<<"   "
              << vCLK.vedi()
              << "   MREQ = " << pin_state_to_string(cpu.MREQ.get_value())
              << "   RD   = " << pin_state_to_string(cpu.RD.get_value())
