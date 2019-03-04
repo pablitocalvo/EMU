@@ -2,18 +2,24 @@
 #define UI_H_
 #include "common.h"
 
+#include "VistaPin.h"
+
+
 class UI
 {
+
+
+
 public:
     UI(CPU & c)
-            : cpu (c)
-    {}
+            : cpu (c), vCLK(VistaPin( c.CLK ) )
+    { }
 
     void
     visualizza()
-    {
+    {  cout<<pin_state_to_string (cpu.CLK.get_value())<<endl;;
         cout << "STATO " << cpu.stato
-             << "   CLK = "  << pin_state_to_string(cpu.CLK.get_value())
+             << vCLK.vedi()
              << "   MREQ = " << pin_state_to_string(cpu.MREQ.get_value())
              << "   RD   = " << pin_state_to_string(cpu.RD.get_value())
         << endl;
@@ -30,9 +36,10 @@ public:
     }
 
 
-private:
+public:
     CPU & cpu;
 
+    VistaPin vCLK ;
 
 };
 
