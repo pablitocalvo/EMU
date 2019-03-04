@@ -27,7 +27,7 @@ class PIN
         string nome;
 
     public:
-
+        bool is_high(){return valore==PIN_HIGH;}
         void set_high(){valore=PIN_HIGH;pin_writed_to_HIGH();}
         void set_low() {valore=PIN_LOW;pin_writed_to_LOW();}
         void toggle() { if (valore==PIN_HIGH)  set_low(); else set_high() ;pin_writed_to_LOW();}
