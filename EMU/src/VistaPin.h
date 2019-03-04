@@ -21,6 +21,14 @@ public:
             : pin (p)
     {
         set_s_vista ();
+        p.pin_writed_to_HIGH.connect(
+                                       sigc::bind<0> (
+                                               sigc::mem_fun (this, &VistaPin::on_pin_writed_to_HIGH),
+                                               p));
+        p.pin_writed_to_LOW.connect(
+                                       sigc::bind<0> (
+                                               sigc::mem_fun (this, &VistaPin::on_pin_writed_to_LOW),
+                                               p));
     }
     ;
     virtual
@@ -63,6 +71,11 @@ public:
 private:
     PIN & pin;
     string s_vista;
+
+    void on_pin_writed_to_HIGH(PIN & pin ){ set_s_vista();}
+    void on_pin_writed_to_LOW(PIN & pin){set_s_vista();}
+
+
 };
 
 #endif /* VISTAPIN_H_ */
