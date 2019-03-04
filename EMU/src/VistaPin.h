@@ -9,16 +9,18 @@
 #define VISTAPIN_H_
 
 #include "PIN.h"
+#include "Vista.h"
 #include <string>
 using namespace std;
 
 class VistaPin : public Vista
 {
 public:
+
     VistaPin(PIN & p)
             : pin (p)
     {
-        s_vista = set_s_vista ();
+        set_s_vista ();
     }
     ;
     virtual
@@ -50,7 +52,7 @@ public:
 
     void
     set_s_vista()
-    {
+    {   cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
         s_vista = pin.get_nome () + pin_state_to_string (pin.get_value ());
         if (is_attiva ())
             " [ " + s_vista + " ] ";
