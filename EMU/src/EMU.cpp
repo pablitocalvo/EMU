@@ -20,6 +20,7 @@ using namespace std;
 
 #include "CPU.h"
 #include "UI.h"
+#include "common.h"
 
 CPU cpu = CPU ();
 UI ui = UI (cpu);
@@ -32,6 +33,12 @@ main()
     cpu.setStato("ON");
     char c;
     ui.visualizza ();
+
+    cout<<"asdasd "<<ui.vCLK.vedi()<<endl;
+    cpu.CLK.toggle();
+    cout<<"asdasd "<<ui.vCLK.vedi()<<endl;
+    cout<<pin_state_to_string (cpu.CLK.get_value());
+
     while (1)
     {
         cin >> c;
