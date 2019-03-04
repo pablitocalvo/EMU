@@ -34,17 +34,14 @@ main()
     char c;
     ui.visualizza ();
 
-    cout<<"asdasd "<<ui.vCLK.vedi()<<endl;
-    cpu.CLK.toggle();
-    cout<<"asdasd "<<ui.vCLK.vedi()<<endl;
-    cout<<pin_state_to_string (cpu.CLK.get_value());
+
 
     while (1)
     {
         cin >> c;
         if (c == 't')
-        {   cpu.CLK.toggle();cpu.on_CLK_toggle ();
-            ui.visualizza ();
+        {   cpu.CLK.toggle();
+            //ui.visualizza();
         }
         if (c == 'x')
         { cout <<"ciaoooooooooooooooo"; exit (0);}
