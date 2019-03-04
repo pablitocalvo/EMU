@@ -49,7 +49,7 @@ public:
     {
         if (stato == "OFF")
             return;
-        if ((stato == "ON") ||(stato == "E2"))
+        if (((stato == "ON") && CLK.is_high() ) || (stato == "E2"))
         {
             setStato ("F1");
 
