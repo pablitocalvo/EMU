@@ -11,6 +11,7 @@
 class Vista
 {
 public:
+
     Vista(){vista_attiva=false;}
     virtual
     ~Vista(){};
@@ -20,7 +21,7 @@ public:
     virtual void attiva()=0;
     virtual void disattiva()=0;
 
-    virtual void vedi()=0; // la classe è astratta e questo è un metodo virtuale puro
+    virtual string vedi()=0; // la classe è astratta e questo è un metodo virtuale puro
 
 
 protected:

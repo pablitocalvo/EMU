@@ -52,7 +52,7 @@ public:
 
     void
     set_s_vista()
-    {   cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
+    {   //cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
         s_vista = pin.get_nome () + pin_state_to_string (pin.get_value ());
         if (is_attiva ())
             " [ " + s_vista + " ] ";
