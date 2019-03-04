@@ -25,10 +25,18 @@ public:
     CPU()
     {
         stato="OFF";mnemo=" NOP ";
+
+        CLK.pin_toggled.connect (
+                      //  sigc::bind (
+                                sigc::mem_fun (this, &CPU::on_CLK_toggle)
+                        //, &CLK)
+        )      ;
+
     }
 
     string stato,mnemo;
 
+    sigc::signal<void> cpu_state_changed;
 
     Registro A = Registro ("A");
     Registro B = Registro ("B");
@@ -49,11 +57,14 @@ public:
     {
         if (stato == "OFF")
             return;
-        if (((stato == "ON") && CLK.is_high() ) || (stato == "E2"))
+
+        if (((stato == "ON") && CLK.is_high()  ) || (stato == "E2"))
         {
             setStato ("F1");
 
             AR.set_valore (PC.get_valore ());
+
+
 
         }
         else if (stato == "F1")
@@ -113,7 +124,7 @@ public:
             setStato ("E2");
         }
 
-
+        cpu_state_changed() ;//TODO non è sempre necessario ..vedi primi due if ...
     }
 
 
