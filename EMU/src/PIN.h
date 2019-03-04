@@ -28,8 +28,12 @@ class PIN
         void toggle() { if (valore==PIN_HIGH)  set_low(); else set_high() ;}
 
         Pin_3state_value
+        get_value()
+        {  return ( valore );  }
 
-        get_value(){  return ( valore );  }
+        string
+        get_nome()
+        { return nome;}
 
 
 
