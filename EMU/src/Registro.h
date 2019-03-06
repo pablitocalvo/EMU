@@ -14,30 +14,35 @@ using namespace std;
 
 class Registro
 {
+
+typedef enum Stato_registro { READING , STANDBY , WRITING };
 public:
-    Registro(string n) : nome(n){ set_valore(0);};
+    Registro(string n) : nome(n), valore(0) , stato(STANDBY) {};
     virtual
     ~Registro()
     {
     }
 
+    sigc::signal<void> reg_writing;
+    sigc::signal<void> reg_reading;
+    sigc::signal<void> reg_standby;
+
     char
-    get_valore() const {  return valore; }
+    READ() const { return valore;  }
 
     void
-    set_valore (char valore){ this->valore = valore; }
+    WRITE (char valore){ this->valore = valore; }
 
-    void enable () { en=true; }
-    void disable() { en=false; }
-
-
+    void set_READING() { stato=READING;reg_reading(); }
+    void set_WRITING() { stato=WRITING;reg_writing(); }
+    void set_STANDBY() { stato=STANDBY;reg_standby(); }
 
 
 
 private:
     char valore;
     string nome;
-    bool en;
+    Stato_registro stato ;
 
 
 public:
