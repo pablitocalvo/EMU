@@ -8,6 +8,7 @@
 #ifndef REGISTRO_H_
 #define REGISTRO_H_
 
+#include <list>
 #include <string>
 using namespace std;
 
@@ -23,25 +24,40 @@ public:
     {
     }
 
-    sigc::signal<void> reg_writing;
-    sigc::signal<void> reg_reading;
-    sigc::signal<void> reg_standby;
+    sigc::signal<void> reg_state_writing;
+    sigc::signal<void> reg_state_reading;
+    sigc::signal<void> reg_state_standby;
+    sigc::signal<void> reg_writed; //sono necessari veramente??
+    sigc::signal<void> reg_read;   //sono necessary veramente??
 
     char
-    READ() const { return valore;  }
+    READ() const { reg_read();return valore;  }
 
     void
-    WRITE (char valore){ this->valore = valore; }
+    WRITE (char valore){ this->valore = valore; reg_writed(); }
 
-    void set_READING() { stato=READING;reg_reading(); }
-    void set_WRITING() { stato=WRITING;reg_writing(); }
-    void set_STANDBY() { stato=STANDBY;reg_standby(); }
+    void set_READING() { stato=READING;reg_state_reading(); }
+    void set_WRITING() { stato=WRITING;reg_state_writing(); }
+    void set_STANDBY() { stato=STANDBY;reg_state_standby(); }
 
+
+    bool is_reading(){return (stato==READING);}
+    bool is_writing(){return (stato==WRITING);}
+    bool is_standby(){return (stato==STANDBY);}
+
+    void set_valore(char c){valore=c;}
+    char get_valore(){return valore;}
+
+    string
+    get_nome()
+    {
+        return nome;
+    }
 
 
 private:
-    char valore;
     string nome;
+    char valore;
     Stato_registro stato ;
 
 
