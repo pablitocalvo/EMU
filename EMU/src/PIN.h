@@ -7,8 +7,6 @@
 
 #ifndef PIN_H_
 #define PIN_H_
-
-#include <sigc++/sigc++.h>
 #include "common.h"
 class PIN
 {
@@ -30,7 +28,11 @@ class PIN
         bool is_high(){return valore==PIN_HIGH;}
         void set_high(){valore=PIN_HIGH;pin_writed_to_HIGH();}
         void set_low() {valore=PIN_LOW;pin_writed_to_LOW();}
-        void toggle() { if (valore==PIN_HIGH)  set_low(); else set_high() ;pin_writed_to_LOW(); pin_toggled();}
+        void toggle() { if (valore==PIN_HIGH)
+                              {set_low()  ;  pin_writed_to_LOW();}
+                        else  {set_high() ;  pin_writed_to_LOW();}
+                        pin_toggled();
+                      }
 
         Pin_3state_value
         get_value()
