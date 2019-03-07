@@ -8,30 +8,50 @@
 #ifndef VISTA_H_
 #define VISTA_H_
 
+#include "common.h"
 #include <list>
-using namespace std;
+
 
 class Vista
 {
 public:
 
-    Vista(){vista_attiva=false;}
+    Vista()
+        {vista_attiva=false;s_vista="";}
     virtual
     ~Vista(){};
 
-    bool is_attiva(){ return vista_attiva;}
+    bool
+    is_attiva()
+    { return vista_attiva;}
 
-    virtual void attiva()=0;
-    virtual void disattiva()=0;
+    void
+    attiva()
+        {
+            vista_attiva = true;
+            set_s_vista ();
+        }
 
-    virtual string vedi()=0; // la classe è astratta e questo è un metodo virtuale puro
+    void
+    disattiva()
+        {
+            vista_attiva = false;
+            set_s_vista ();
+        }
 
+    string
+    vedi()
+        {
 
+            return s_vista;
+        }
+
+    virtual void set_s_vista()=0; //pure virtual
 
 
 protected:
      bool vista_attiva;
-    
+     string s_vista;
 
 };
 

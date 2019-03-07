@@ -8,23 +8,16 @@
 #ifndef VISTAPIN3STATE_H_
 #define VISTAPIN3STATE_H_
 
+#include "common.h"
 #include "PIN3state.h"
 #include "Vista.h"
-#include <string>
-using namespace std;
 
-class VistaPin3_State : public Vista
+class VistaPin3_State : public VistaPin
 {
 public:
-
     VistaPin3_State(PIN_3state & p)
-            : pin (p)
+            : VistaPin(p)
     {
-        set_s_vista ();
-        p.pin_writed_to_HIGH.connect( sigc::bind<0> ( sigc::mem_fun (this, &VistaPin3_State::on_pin_writed_to_HIGH), p));
-        p.pin_writed_to_LOW.connect(  sigc::bind<0> ( sigc::mem_fun (this, &VistaPin3_State::on_pin_writed_to_LOW ), p));
-
-        //differetnte da VistaPIN
         p.pin_enabled.connect ( sigc::bind<0> ( sigc::mem_fun (this, &VistaPin3_State::on_pin_enabled  ), p));
         p.pin_disabled.connect( sigc::bind<0> ( sigc::mem_fun (this, &VistaPin3_State::on_pin_disabled ), p));
     }
@@ -33,28 +26,9 @@ public:
     ~VistaPin3_State()
     {
     }
-    ;
 
-    void
-    attiva()
-    {
-        vista_attiva = true;
-        set_s_vista ();
-    }
 
-    void
-    disattiva()
-    {
-        vista_attiva = false;
-        set_s_vista ();
-    }
 
-    string
-    vedi()
-    {
-
-        return s_vista;
-    }
 
     void
     set_s_vista()
@@ -68,12 +42,7 @@ public:
     }
 
 private:
-    PIN_3state & pin;
-    string s_vista;
 
-    void on_pin_writed_to_HIGH(PIN_3state & pin ){attiva();}
-    void on_pin_writed_to_LOW(PIN_3state & pin){attiva();}
-    //differetnte da VistaPIN
     void on_pin_enabled(PIN_3state & pin ){attiva();}
     void on_pin_disabled(PIN_3state & pin ){attiva();}
 
