@@ -21,16 +21,10 @@ public:
             : pin (p)
     {
         set_s_vista ();
-        p.pin_writed_to_HIGH.connect(
-                                       sigc::bind<0> (
-                                               sigc::mem_fun (this, &VistaPin::on_pin_writed_to_HIGH),
-                                               p));
-        p.pin_writed_to_LOW.connect(
-                                       sigc::bind<0> (
-                                               sigc::mem_fun (this, &VistaPin::on_pin_writed_to_LOW),
-                                               p));
+        p.pin_writed_to_HIGH.connect( sigc::bind<0> ( sigc::mem_fun (this, &VistaPin::on_pin_writed_to_HIGH), p));
+        p.pin_writed_to_LOW.connect(  sigc::bind<0> ( sigc::mem_fun (this, &VistaPin::on_pin_writed_to_LOW ), p));
     }
-    ;
+
     virtual
     ~VistaPin()
     {
@@ -61,19 +55,20 @@ public:
     void
     set_s_vista()
     {   //cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
-        s_vista = pin.get_nome () + pin_state_to_string (pin.get_value ());
+
+        s_vista = pin.get_nome () +" "+ pin_state_to_string (pin.get_value ());
         if (is_attiva ())
-            " [ " + s_vista + " ] ";
+            s_vista =" [ " + s_vista + " ] ";
         else
-            "   " + s_vista + "   ";
+            s_vista ="   " + s_vista + "   ";
     }
 
 private:
     PIN & pin;
     string s_vista;
 
-    void on_pin_writed_to_HIGH(PIN & pin ){ set_s_vista();}
-    void on_pin_writed_to_LOW(PIN & pin){set_s_vista();}
+    void on_pin_writed_to_HIGH(PIN & pin ){attiva();}
+    void on_pin_writed_to_LOW(PIN & pin){attiva();}
 
 
 };
