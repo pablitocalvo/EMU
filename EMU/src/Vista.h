@@ -21,6 +21,9 @@ public:
     virtual
     ~Vista(){};
 
+    sigc::signal<void,string> vista_attivata;
+    sigc::signal<void,string> vista_disattivata;
+
     bool
     is_attiva()
     { return vista_attiva;}
@@ -30,6 +33,8 @@ public:
         {
             vista_attiva = true;
             set_s_vista ();
+            vista_attivata(s_vista);
+
         }
 
     void
@@ -37,6 +42,7 @@ public:
         {
             vista_attiva = false;
             set_s_vista ();
+            vista_disattivata(s_vista);
         }
 
     string
@@ -46,7 +52,7 @@ public:
             return s_vista;
         }
 
-    virtual void set_s_vista()=0; //pure virtual
+    virtual void set_s_vista()=0;
 
 
 protected:
