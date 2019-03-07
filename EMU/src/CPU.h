@@ -67,10 +67,6 @@ public:
             AR.set_WRITING();
             AR.WRITE(PC.READ());
 
-
-
-
-
         }
         else if (stato == "F1")
         {
