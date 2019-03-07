@@ -47,7 +47,7 @@ public:
 
     PIN CLK = PIN ("CLK");
 
-    PIN_3state MREQ = PIN_3state ("RW");
+    PIN_3state MREQ = PIN_3state ("MREQ");
     PIN_3state RD = PIN_3state ("RD");
 
 
@@ -62,7 +62,12 @@ public:
         {
             setStato ("F1");
 
-            AR.set_valore (PC.get_valore ());
+
+            PC.set_READING();  //TODO spostare a carico dei registri ?
+            AR.set_WRITING();
+            AR.WRITE(PC.READ());
+
+
 
 
 
@@ -71,14 +76,21 @@ public:
         {
             setStato ("F2");
 
+            PC.set_STANDBY();
+            AR.set_STANDBY();
+
             RD.set_high ();
             RD.enable ();
+
             MREQ.set_high ();
             MREQ.enable ();
+
 
         }
         else if (stato == "F2")
         {
+
+
             setStato ("F3");
             //non fa nioente wait per RAM (pone DR= ram(addr)
 
@@ -127,7 +139,6 @@ public:
         cpu_state_changed() ;//TODO non è sempre necessario ..vedi primi due if ...
     }
 
-
 public:    void
     setStato(string s)
     {
@@ -147,7 +158,7 @@ private:
              {    // inc A
                              char appo = A.get_valore ();
                              appo++;
-                             A.set_valore (appo);
+                             A.WRITE(appo);
              }
      }
 
