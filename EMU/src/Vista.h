@@ -7,6 +7,10 @@
 
 #ifndef VISTA_H_
 #define VISTA_H_
+#include "UI.h"
+
+#include <list>
+using namespace std;
 
 class Vista
 {
@@ -26,6 +30,7 @@ public:
 
 protected:
      bool vista_attiva;
+    
 
 };
 

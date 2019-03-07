@@ -76,7 +76,7 @@ public:
     VistaPin3_State vRD ;
 private:
 
-    list<Vista & > viste_attive ={};
+   // list<Vista & > viste_attive ={};
 
 };
 
