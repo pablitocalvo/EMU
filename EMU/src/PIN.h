@@ -32,8 +32,8 @@ class PIN
         virtual void set_high(){valore=PIN_HIGH;pin_writed_to_HIGH();}
         virtual void set_low() {valore=PIN_LOW;pin_writed_to_LOW();}
         virtual void toggle() { if (valore==PIN_HIGH)
-                              {set_low()  ;  pin_writed_to_LOW();}
-                        else  {set_high() ;  pin_writed_to_LOW();}
+                              {valore=PIN_LOW  ;  pin_writed_to_LOW();}
+                        else  {valore=PIN_HIGH ;  pin_writed_to_LOW();}
                         pin_toggled();
                       }
 
