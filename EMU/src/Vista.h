@@ -7,7 +7,6 @@
 
 #ifndef VISTA_H_
 #define VISTA_H_
-#include "UI.h"
 
 #include <list>
 using namespace std;
