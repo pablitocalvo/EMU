@@ -27,6 +27,8 @@ public:
     virtual string vedi()=0; // la classe è astratta e questo è un metodo virtuale puro
 
 
+
+
 protected:
      bool vista_attiva;
     
