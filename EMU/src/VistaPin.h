@@ -29,7 +29,8 @@ public:
     ~VistaPin()
     {
     }
-    ;
+
+
 
     void
     attiva()

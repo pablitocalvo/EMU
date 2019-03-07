@@ -9,6 +9,7 @@
 #define COMMON_H_
 
 #include <sigc++/sigc++.h>
+#include <iostream>
 #include <string>
 using namespace std;
 
