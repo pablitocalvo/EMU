@@ -50,7 +50,68 @@ public:
     PIN_3state MREQ = PIN_3state ("MREQ");
     PIN_3state RD = PIN_3state ("RD");
 
+void run()
+{
+    while(1)
+    {   //assert stato==F1
 
+     //FETCH*************************************
+     // T1-HIGH
+
+        PC.set_READING();  //TODO spostare a carico dei registri ?
+        AR.set_WRITING();
+        AR.WRITE(PC.READ());
+
+    //cpu_step_done(); //cpu_start_step();
+    // T1-LOW
+
+        PC.set_STANDBY();    //ora?
+        //AR.set_STANDBY();  //ora?
+
+        RD.set_high ();
+        RD.enable ();
+
+        MREQ.set_high ();
+        MREQ.enable ();
+
+    //cpu_step_done(); //cpu_start_step();
+    // T2-HIGH
+
+            // wait cicle....
+
+    //cpu_step_done(); //cpu_start_step();
+    // T2-LOW
+            // pone DR = ram( AR )...
+
+    //DECODE *****************************************
+    //cpu_step_done(); //cpu_start_step();
+    // T1-HIGH
+
+        RD.set_low ();
+        RD.disable ();
+        MREQ.set_low ();
+        MREQ.disable ();
+    //cpu_step_done(); //cpu_start_step();
+    // T2-LOW
+        mnemo = " INC A ";
+
+    //EXECUTE *******************************************
+    //cpu_step_done(); //cpu_start_step();
+    // T1-HIGH
+
+        // per ora nulla
+
+
+    //cpu_step_done(); //cpu_start_step();
+    // T2-LOW
+
+        char appo = A.get_valore ();
+        appo++;
+        A.WRITE(appo);
+    //****************************************************
+    }
+
+}
 
     void
     on_CLK_toggle()
