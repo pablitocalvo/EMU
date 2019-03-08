@@ -12,18 +12,16 @@
 #include "PIN3state.h"
 #include "Vista.h"
 
-class VistaPin3_State : public VistaPin
+class VistaPIN3_State : public VistaPIN
 {
 public:
-    VistaPin3_State(PIN_3state & p)
-            : VistaPin(p)
+    VistaPIN3_State(PIN_3state & p)
+            : VistaPIN(p)
     {
-        p.pin_enabled.connect ( sigc::bind<0> ( sigc::mem_fun (this, &VistaPin3_State::on_pin_enabled  ), p));
-        p.pin_disabled.connect( sigc::bind<0> ( sigc::mem_fun (this, &VistaPin3_State::on_pin_disabled ), p));
-    }
+      }
     ;
     virtual
-    ~VistaPin3_State()
+    ~VistaPIN3_State()
     {
     }
 
@@ -41,10 +39,9 @@ public:
             s_vista ="   " + s_vista + "   ";
     }
 
-private:
 
-    void on_pin_enabled(PIN_3state & pin ){attiva();}
-    void on_pin_disabled(PIN_3state & pin ){attiva();}
+
+
 
 
 };

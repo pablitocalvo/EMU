@@ -25,28 +25,26 @@ using namespace std;
 CPU cpu = CPU ();
 UI ui = UI (cpu);
 
+void on_cpu_step_done()
+{
+    char c;
+    do
+    {   cin >> c;
+       // if (c == 't') break;
+
+    } while( c!= 't');
+}
 int
 main()
 {  // cout <<"hdfgdfd"<<endl;
     cpu.PC.set_valore(30);
     cpu.DR.set_valore(1);
-    cpu.setStato("ON");
-    char c;
-    ui.visualizza ();
+
+    cpu.cpu_step_dones.connect( &on_cpu_step_done );
+
+    cpu.run();
 
 
-
-    while (1)
-    {
-        cin >> c;
-        if (c == 't')
-        {   cpu.CLK.toggle();
-            //ui.visualizza();
-        }
-        if (c == 'x')
-        { cout <<"ciaoooooooooooooooo"; exit (0);}
-
-    }
 
     return 0;
 }

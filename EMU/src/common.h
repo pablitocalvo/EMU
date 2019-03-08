@@ -15,6 +15,7 @@ using namespace std;
 
 typedef enum Pin_3state_value { PIN_LOW, PIN_Z, PIN_HIGH};
 
+
 string pin_state_to_string(Pin_3state_value stato )
 {
     string appo;

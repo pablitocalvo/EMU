@@ -2,11 +2,13 @@
 #define UI_H_
 #include "common.h"
 
-#include "VistaPin.h"
-#include "VistaPin3State.h"
 #include "VistaRegistro.h"
 
 #include <list>
+#include <map>
+#include "Vista.h"
+#include "VistaPIN.h"
+#include "VistaPIN3State.h"
 
 using namespace std;
 
@@ -18,65 +20,89 @@ public:
                     VistaRegistro (c.DR)), vIR (VistaRegistro (c.IR)), vAR (
                     VistaRegistro (c.AR)),
 
-            vCLK (VistaPin (c.CLK)), vMREQ (VistaPin3_State (c.MREQ)), vRD (
-                    VistaPin3_State (c.RD))
+            vCLK (VistaPIN (c.CLK)), vMREQ (VistaPIN3_State (c.MREQ)), vRD (
+                    VistaPIN3_State (c.RD))
 
     {
-        cpu.cpu_state_changed.connect (
-                        sigc::mem_fun (this, &UI::on_cpu_state_changed));
+        cpu.cpu_state_changed.connect( sigc::mem_fun (this, &UI::on_cpu_state_changed) );
 
-        vA.vista_attivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_attivata ), vA));
+        cpu.cpu_step_dones.connect( sigc::mem_fun (this, &UI::on_cpu_step_done) );
 
-        vPC.vista_attivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_attivata ), vPC));
-        vDR.vista_attivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_attivata ), vDR));
-        vIR.vista_attivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_attivata ), vIR));
-        vAR.vista_attivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_attivata ), vAR));
-        vCLK.vista_attivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_attivata ), vCLK));
-        vMREQ.vista_attivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_attivata ), vMREQ));
-        vRD.vista_attivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_attivata ), vRD));
+        cpu.cpu_step_starts.connect( sigc::mem_fun (this, &UI::on_cpu_step_start) );
 
-        vA.vista_disattivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_disattivata ), vA));
 
-        vPC.vista_disattivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_disattivata ), vPC));
-        vDR.vista_disattivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_disattivata ), vDR));
-        vIR.vista_disattivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_disattivata ), vIR));
-        vAR.vista_disattivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_disattivata ), vAR));
-        vCLK.vista_disattivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_disattivata ), vCLK));
-        vMREQ.vista_disattivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_disattivata ), vMREQ));
-        vRD.vista_disattivata.connect( sigc::bind<0> ( sigc::mem_fun (this, &UI::on_vista_disattivata ), vRD));
+        cpu.cpu_reg_set_reading.connect( sigc::mem_fun (this, &UI::on_cpu_reg_mod));
+        cpu.cpu_reg_set_writing.connect( sigc::mem_fun (this, &UI::on_cpu_reg_mod));
+        cpu.cpu_reg_set_standby.connect( sigc::mem_fun (this, &UI::on_cpu_reg_mod));
+
+
+        cpu.cpu_reg_WRITE.connect( sigc::mem_fun (this, &UI::on_cpu_reg_mod));
+        cpu.cpu_reg_READ.connect( sigc::mem_fun (this, &UI::on_cpu_reg_mod));
+
+//
+        cpu.cpu_pin_writed_to_LOW.connect( sigc::mem_fun (this, &UI::on_cpu_pin_mod));
+        cpu.cpu_pin_writed_to_HIGH.connect( sigc::mem_fun (this, &UI::on_cpu_pin_mod));
+
+        cpu.cpu_pin_enabled.connect( sigc::mem_fun (this, &UI::on_cpu_pin_mod));
+        cpu.cpu_pin_disabled.connect( sigc::mem_fun (this, &UI::on_cpu_pin_mod));
+
+
+
+        vista_del_reg[&cpu.A]=&vA;
+        vista_del_reg[&cpu.PC]=&vPC;
+        vista_del_reg[&cpu.DR]=&vDR;
+        vista_del_reg[&cpu.IR]=&vIR;
+        vista_del_reg[&cpu.AR]=&vAR;
+
+        vista_del_pin[&cpu.CLK]=&vCLK;
+        vista_del_pin[&cpu.RD]=&vRD;
+        vista_del_pin[&cpu.MREQ]=&vMREQ;
+
+
+    }
+
+    void on_cpu_step_done(){visualizza();}
+
+    void on_cpu_step_start(){disattiva_le_viste_stato_precedente();}
+
+    void on_cpu_pin_mod (PIN & pin)
+        {
+            VistaPIN * v=vista_del_pin[&pin];
+            v->attiva();
+
+            //cout << "vista attivata ="<<v->vedi()<<endl;
+            viste_attive.push_back(v) ;
+
+        }
+
+    void on_cpu_reg_mod (Registro & reg)
+    {
+        VistaRegistro * v=vista_del_reg[&reg];
+        v->attiva();
+
+       // cout << "vista attivata ="<<v->vedi()<<endl;
+        viste_attive.push_back(v) ;
 
     }
 
 
-    void
-    on_vista_attivata(Vista & v, string s)
-    {
-        cout << "vista attivata ="<<s<<endl;
-        viste_attive.push_back(&v) ;
-
-    }
-
-    void
-    on_vista_disattivata(Vista & v, string s)
-    {
-        cout << "vista dis-attivata ="<<s<<endl;
-    }
 
     void
     disattiva_le_viste_stato_precedente()
-    {cout<<endl<<"disattiva le viste precedenti"<<endl;
-        cout << "viste attive # "<<viste_attive.size()<< endl;
-        cout << "viste attive vuota "<<viste_attive.empty()<< endl;
+    {
+       // cout<<endl<<"disattiva le viste precedenti"<<endl;
+//        cout << "viste attive # "<<viste_attive.size()<< endl;
+//        cout << "viste attive vuota "<<viste_attive.empty()<< endl;
 
         while (!viste_attive.empty())
           {
-            cout<<(viste_attive.back()->vedi());
+            //cout<<(viste_attive.back()->vedi());
             viste_attive.back()->disattiva();
             viste_attive.pop_back();
 
           }
-        cout << "viste attive # "<<viste_attive.size()<< endl;
-        cout << "viste attive vuota "<<viste_attive.empty()<< endl<< endl;
+//        cout << "viste attive # "<<viste_attive.size()<< endl;
+//        cout << "viste attive vuota "<<viste_attive.empty()<< endl<< endl;
 
 
     }
@@ -89,7 +115,8 @@ public:
     void
     visualizza()
     {  //cout<<pin_state_to_string (cpu.CLK.get_value())<<endl;;
-        cout << "STATO " << cpu.stato << "   " << vCLK.vedi () << vMREQ.vedi ()
+        cout << "STATO " << cpu.stato
+                << "   " << vCLK.vedi () << vMREQ.vedi ()
                 << vRD.vedi () << "   MREQ = "
                 << pin_state_to_string (cpu.MREQ.get_value ()) << "   RD   = "
                 << pin_state_to_string (cpu.RD.get_value ()) << endl;
@@ -100,13 +127,14 @@ public:
         cout << vAR.vedi () << "  ";
         cout << vIR.vedi () << "  ";
 
-        cout << endl;
-        cout << "A  = " << ((int) cpu.A.get_valore ()) << "  ";
-        cout << "PC = " << ((int) cpu.PC.get_valore ()) << "  ";
-        cout << "DR = " << ((int) cpu.DR.get_valore ()) << "  ";
-        cout << "AR = " << ((int) cpu.AR.get_valore ()) << "  ";
-        cout << "IR = " << ((int) cpu.IR.get_valore ()) << "  " << endl << endl;
-        cout << "istr = " << cpu.mnemo << endl << endl;
+                cout << endl;
+
+//        cout << "A  = " << ((int) cpu.A.get_valore ()) << "  ";
+//        cout << "PC = " << ((int) cpu.PC.get_valore ()) << "  ";
+//        cout << "DR = " << ((int) cpu.DR.get_valore ()) << "  ";
+//        cout << "AR = " << ((int) cpu.AR.get_valore ()) << "  ";
+//        cout << "IR = " << ((int) cpu.IR.get_valore ()) << "  " << endl << endl;
+//        cout << "istr = " << cpu.mnemo << endl << endl;
 
     }
 
@@ -118,12 +146,16 @@ public:
     VistaRegistro vIR;
     VistaRegistro vAR;
 
-    VistaPin vCLK;
-    VistaPin3_State vMREQ;
-    VistaPin3_State vRD;
+    VistaPIN vCLK;
+    VistaPIN3_State vMREQ;
+    VistaPIN3_State vRD;
 private:
 
      list<Vista *> viste_attive;  //quali i rischi di un puntartore?
+
+     std::map<Registro *, VistaRegistro *> vista_del_reg ;
+     std::map<PIN *, VistaPIN *> vista_del_pin ;
+
 
 };
 

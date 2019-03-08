@@ -14,22 +14,13 @@ class PIN_3state :public PIN
         PIN_3state(string n) : PIN(n) { disable(); };
         virtual
         ~PIN_3state(){};
-
-        sigc::signal<void> pin_enabled;
-        sigc::signal<void> pin_disabled;
-
-
     private:
         Pin_3state_value en,output ;
 
-
-
     public:
 
-        void enable()  { en=PIN_HIGH; output=valore; pin_enabled(); }
-        void disable() { en=PIN_LOW ; output=PIN_Z ; pin_disabled();}
-
-
+        void enable()  { en=PIN_HIGH; output=valore;  }
+        void disable() { en=PIN_LOW ; output=PIN_Z ; }
 
         Pin_3state_value
         get_value(){  return ( (en==PIN_HIGH) ? valore : PIN_Z);  }

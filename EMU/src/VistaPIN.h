@@ -12,19 +12,17 @@
 #include "PIN.h"
 #include "Vista.h"
 
-class VistaPin : public Vista
+class VistaPIN : public Vista
 {
 public:
-    VistaPin(PIN & p)
+    VistaPIN(PIN & p)
             : pin (p)
     {
         set_s_vista ();
-        p.pin_writed_to_HIGH.connect( sigc::bind<0> ( sigc::mem_fun (this, &VistaPin::on_pin_writed_to_HIGH), p));
-        p.pin_writed_to_LOW.connect(  sigc::bind<0> ( sigc::mem_fun (this, &VistaPin::on_pin_writed_to_LOW ), p));
     }
 
     virtual
-    ~VistaPin()
+    ~VistaPIN()
     {
     }
 
@@ -43,8 +41,6 @@ protected:
     PIN & pin;
 
 
-    void on_pin_writed_to_HIGH(PIN & pin ){attiva();}
-    void on_pin_writed_to_LOW(PIN & pin){attiva();}
 
 
 };

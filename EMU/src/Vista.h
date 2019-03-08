@@ -11,53 +11,52 @@
 #include "common.h"
 #include <list>
 
-
 class Vista
 {
 public:
 
     Vista()
-        {vista_attiva=false;s_vista="";}
+    {
+        vista_attiva = false;
+        s_vista = "";
+    }
     virtual
-    ~Vista(){};
-
-    sigc::signal<void,string> vista_attivata;
-    sigc::signal<void,string> vista_disattivata;
+    ~Vista()
+    {
+    }
 
     bool
     is_attiva()
-    { return vista_attiva;}
+    {
+        return vista_attiva;
+    }
 
     void
     attiva()
-        {
-            vista_attiva = true;
-            set_s_vista ();
-            vista_attivata(s_vista);
-
-        }
+    {
+        vista_attiva = true;
+        set_s_vista ();
+    }
 
     void
     disattiva()
-        {
-            vista_attiva = false;
-            set_s_vista ();
-            vista_disattivata(s_vista);
-        }
+    {
+        vista_attiva = false;
+        set_s_vista ();
+    }
 
     string
     vedi()
-        {
+    {
+        return s_vista;
+    }
 
-            return s_vista;
-        }
-
-    virtual void set_s_vista()=0;
-
+    virtual void
+    set_s_vista()=0;
 
 protected:
-     bool vista_attiva;
-     string s_vista;
+    bool vista_attiva;
+    string s_vista;
 
 };
 

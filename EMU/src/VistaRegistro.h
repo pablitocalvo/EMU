@@ -18,16 +18,7 @@ public:
     VistaRegistro(Registro & r): reg(r)
     {
             set_s_vista ();
-
-            reg.reg_state_writing.connect(sigc::bind<0> ( sigc::mem_fun (this, &VistaRegistro::on_reg_state_writing), r) );
-            reg.reg_state_reading.connect(sigc::bind<0> ( sigc::mem_fun (this, &VistaRegistro::on_reg_state_reading), r) );
-            reg.reg_state_standby.connect(sigc::bind<0> ( sigc::mem_fun (this, &VistaRegistro::on_reg_state_standby), r) );
-
-
-            reg.reg_writed.connect(sigc::bind<0> ( sigc::mem_fun (this, &VistaRegistro::on_reg_writed), r) );
-            reg.reg_read.connect(sigc::bind<0> ( sigc::mem_fun (this, &VistaRegistro::on_reg_read), r) );
-
- }
+    }
 
     ~VistaRegistro()
     {};
@@ -48,17 +39,6 @@ public:
 
 private:
     Registro & reg;
-
-    void on_reg_state_writing(Registro &)
-    {attiva();}
-    void on_reg_state_reading(Registro &)
-    {attiva();}
-    void on_reg_state_standby(Registro &)
-    {attiva();}
-    void on_reg_writed(Registro &)
-    {attiva();}
-    void on_reg_read(Registro &)
-    {attiva();}
 
 
 
