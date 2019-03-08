@@ -15,48 +15,50 @@ class Vista
 {
 public:
 
-    Vista()
-    {
-        vista_attiva = false;
-        s_vista = "";
-    }
-    virtual
-    ~Vista()
-    {
-    }
+  Vista()
+  {
+    vista_attiva = false;
+    s_vista = "";
+  }
+  virtual
+  ~Vista()
+  {
+  }
 
-    bool
-    is_attiva()
-    {
-        return vista_attiva;
-    }
+  bool
+  is_attiva()
+  {
+    return vista_attiva;
+  }
 
-    void
-    attiva()
-    {
-        vista_attiva = true;
-        set_s_vista ();
-    }
+  void
+  attiva()
+  {
+    vista_attiva = true;
+    set_s_vista ();
+  }
 
-    void
-    disattiva()
-    {
-        vista_attiva = false;
-        set_s_vista ();
-    }
+  void
+  disattiva()
+  {
+    vista_attiva = false;
+    set_s_vista ();
+  }
 
-    string
-    vedi()
-    {
-        return s_vista;
-    }
+  string
+  vedi()
+  {
+    return s_vista;
+  }
 
-    virtual void
-    set_s_vista()=0;
+  virtual void
+  set_s_vista(){s_vista="";}
 
 protected:
-    bool vista_attiva;
-    string s_vista;
+  bool vista_attiva;
+  string s_vista;
+
+
 
 };
 

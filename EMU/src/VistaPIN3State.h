@@ -15,34 +15,26 @@
 class VistaPIN3_State : public VistaPIN
 {
 public:
-    VistaPIN3_State(PIN_3state & p)
-            : VistaPIN(p)
-    {
-      }
-    ;
-    virtual
-    ~VistaPIN3_State()
-    {
-    }
+  VistaPIN3_State(PIN_3state & p)
+      : VistaPIN (p)
+  {
+  }
+  ;
+  virtual
+  ~VistaPIN3_State()
+  {
+  }
 
+  void
+  set_s_vista()
+  { //cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
 
-
-
-    void
-    set_s_vista()
-    {   //cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
-
-        s_vista = pin.get_nome () +" "+ pin_state_to_string (pin.get_value ());
-        if (is_attiva ())
-            s_vista =" [ " + s_vista + " ] ";
-        else
-            s_vista ="   " + s_vista + "   ";
-    }
-
-
-
-
-
+    s_vista = pin.get_nome () + " " + pin_state_to_string (pin.get_value ());
+    if (is_attiva ())
+      s_vista = " [ " + s_vista + " ] ";
+    else
+      s_vista = "   " + s_vista + "   ";
+  }
 
 };
 

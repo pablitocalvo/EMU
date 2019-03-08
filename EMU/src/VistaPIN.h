@@ -15,33 +15,31 @@
 class VistaPIN : public Vista
 {
 public:
-    VistaPIN(PIN & p)
-            : pin (p)
-    {
-        set_s_vista ();
-    }
+  VistaPIN(PIN & p)
+      : pin (p)
+  {
+    set_s_vista ();
+  }
 
-    virtual
-    ~VistaPIN()
-    {
-    }
+  virtual
+  ~VistaPIN()
+  {
+  }
 
-    void
-    virtual set_s_vista()
-    {   //cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
+  void
+  virtual
+  set_s_vista()
+  { //cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
 
-        s_vista = pin.get_nome () +" "+ pin_state_to_string (pin.get_value ());
-        if (is_attiva ())
-            s_vista =" [ " + s_vista + " ] ";
-        else
-            s_vista ="   " + s_vista + "   ";
-    }
+    s_vista = pin.get_nome () + " " + pin_state_to_string (pin.get_value ());
+    if (is_attiva ())
+      s_vista = " [ " + s_vista + " ] ";
+    else
+      s_vista = "   " + s_vista + "   ";
+  }
 
 protected:
-    PIN & pin;
-
-
-
+  PIN & pin;
 
 };
 

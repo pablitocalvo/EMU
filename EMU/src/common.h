@@ -13,19 +13,24 @@
 #include <string>
 using namespace std;
 
-typedef enum Pin_3state_value { PIN_LOW, PIN_Z, PIN_HIGH};
-
-
-string pin_state_to_string(Pin_3state_value stato )
+typedef enum Pin_3state_value
 {
-    string appo;
+  PIN_LOW, PIN_Z, PIN_HIGH
+};
 
-    if ( stato==PIN_LOW)  appo ="0";
-    else if ( stato==PIN_HIGH)  appo ="1";
-    else if ( stato==PIN_Z)  appo ="Z";
+string
+pin_state_to_string(Pin_3state_value stato)
+{
+  string appo;
 
-    return appo;
+  if (stato == PIN_LOW)
+    appo = "0";
+  else if (stato == PIN_HIGH)
+    appo = "1";
+  else if (stato == PIN_Z)
+    appo = "Z";
+
+  return appo;
 }
-
 
 #endif /* COMMON_H_ */

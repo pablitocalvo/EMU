@@ -8,24 +8,56 @@
 #ifndef PIN3STATE_H_
 #define PIN3STATE_H_
 #include "common.h"
-class PIN_3state :public PIN
+
+class PIN_3state : public PIN
 {
-    public:
-        PIN_3state(string n) : PIN(n) { disable(); };
-        virtual
-        ~PIN_3state(){};
-    private:
-        Pin_3state_value en,output ;
+public:
+  PIN_3state(string n)
+      : PIN (n)
+  {
+    disable ();
+  }
+  ;
+  virtual
+  ~PIN_3state()
+  {
+  }
+  ;
+private:
+  Pin_3state_value en, output;
 
-    public:
+public:
 
-        void enable()  { en=PIN_HIGH; output=valore;  }
-        void disable() { en=PIN_LOW ; output=PIN_Z ; }
+  void
+  enable()
+  {
+    en = PIN_HIGH;
+    output = valore;
+  }
+  void
+  disable()
+  {
+    en = PIN_LOW;
+    output = PIN_Z;
+  }
 
-        Pin_3state_value
-        get_value(){  return ( (en==PIN_HIGH) ? valore : PIN_Z);  }
+  Pin_3state_value
+  get_value()
+  {
+    return ((en == PIN_HIGH) ? valore : PIN_Z);
+  }
 
+  bool
+  stato_uguale_a(CPU_component &c)
+  {
+     return stato_uguale_a ((PIN_3state &) c);
+  }
 
+  bool
+  stato_uguale_a(PIN_3state & p)
+  {
+    return ((valore == p.valore) && (en==p.en) );
+  }
 
 };
 
