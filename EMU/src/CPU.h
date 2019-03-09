@@ -52,26 +52,26 @@ public:
   set_high(PIN & p)
   { cpu_comp_will_mod(p);
     p.set_high ();
-    cpu_pin_writed_to_HIGH (p);
+   // cpu_pin_writed_to_HIGH (p);
   }
   void
   set_low(PIN & p)
   {cpu_comp_will_mod(p);
     p.set_low ();
-    cpu_pin_writed_to_LOW (p);
+    //cpu_pin_writed_to_LOW (p);
   }
 
   void
   enable(PIN_3state & p)
   { cpu_comp_will_mod(p);
     p.enable ();
-    cpu_pin_enabled (p);
+   // cpu_pin_enabled (p);
   }
   void
   disable(PIN_3state & p)
   { cpu_comp_will_mod(p);
     p.disable ();
-    cpu_pin_disabled (p);
+   // cpu_pin_disabled (p);
   }
 
   Registro A = Registro ("A");
@@ -95,12 +95,11 @@ public:
       //FETCH*************************************
       stato = "FETCH-T1-HIGH";
 
-      set_READING (PC); //TODO spostare a carico della mov read write , penso di si ? ?
-      set_WRITING (AR);
-      MOV (AR, PC);
+//      set_READING (PC); //TODO spostare a carico della mov read write , penso di si ? ?
+//      set_WRITING (AR);
+        MOV (AR, PC);
 
-      step_done ();
-      step_start ();
+      step_done (); step_start ();
       stato = "FETCH-T1-LOW";
 
       set_STANDBY (PC);    //ora?
@@ -110,8 +109,7 @@ public:
       set_high (MREQ);
       enable (MREQ);
 
-      step_done ();
-      step_start ();
+      step_done (); step_start ();
       stato = "FETCH-T2-HIGH";
 
       // wait cicle....
@@ -134,12 +132,13 @@ public:
 
       step_done ();
       step_start ();
-      stato = "DECODE-T2-LOW";
+
+
+      stato = "DECODE-T1-LOW";
       mnemo = " INC A ";
       MOV (IR, DR);
       //EXECUTE *******************************************
-      step_done ();
-      step_start ();
+      step_done ();step_start ();
       stato = "EXECUTE-T1-HIGH";
 
       // per ora nulla
@@ -149,7 +148,8 @@ public:
       WRITE (A, appo);
       step_done ();
       step_start ();
-      stato = "EXECUTE-T2-LOW";
+      stato = "EXECUTE-T1-LOW";
+      set_STANDBY(A);
 
       step_done ();
       step_start ();
@@ -161,6 +161,7 @@ public:
   char
   READ(Registro & reg) const
   { cpu_comp_will_mod(reg);
+    reg.set_reading ();
     cpu_reg_READ (reg);
     return reg.get_valore ();
   }
@@ -168,6 +169,7 @@ public:
   void
   WRITE(Registro & reg, char valore)
   { cpu_comp_will_mod(reg);
+    reg.set_writing ();
     reg.set_valore (valore);
     cpu_reg_WRITE (reg);
   }
@@ -180,7 +182,8 @@ public:
 
   void
   set_READING(Registro & reg)
-  { cpu_comp_will_mod(reg);
+  {
+    cpu_comp_will_mod(reg);
     reg.set_reading ();
     cpu_reg_set_reading (reg);
   }

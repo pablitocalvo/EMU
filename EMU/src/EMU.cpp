@@ -40,9 +40,10 @@ int
 main()
 {  // cout <<"hdfgdfd"<<endl;
   cpu.PC.set_valore (30);
-  cpu.DR.set_valore (1);
 
-  cpu.cpu_step_dones.connect (&on_cpu_step_done);
+  //cpu.WRITE(cpu.DR,1);
+
+  //cpu.cpu_step_dones.connect (&on_cpu_step_done);
 
   cpu.run ();
 
