@@ -39,10 +39,11 @@ on_cpu_step_done()
 int
 main()
 {  // cout <<"hdfgdfd"<<endl;
+
   cpu.PC.set_valore (30);
 
   //cpu.WRITE(cpu.DR,1);
-
+ui.visualizza();
   //cpu.cpu_step_dones.connect (&on_cpu_step_done);
 
   cpu.run ();

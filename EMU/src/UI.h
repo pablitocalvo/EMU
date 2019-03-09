@@ -24,7 +24,7 @@ public:
       vCLK (VistaPIN (c.CLK)), vMREQ (VistaPIN3_State (c.MREQ)), vRD (
           VistaPIN3_State (c.RD))
 
-  { livello="CLK";
+  { livello="FDE";
 
     cpu.cpu_state_changed.connect (sigc::mem_fun (this, &UI::on_cpu_state_changed));
 
@@ -64,7 +64,8 @@ public:
   void
   on_cpu_comp_will_mod(CPU_component & c)
   {
-    //memorizza il componente ( &c ) e salva una copia ( c)  per verificare susccessivamente
+    //memorizza il componente ( &c ) e salva una copia ( c)
+    // per verificare se nel periodo è cambiato ...
     componenti_attivi.push_back ({ & c, c });
   }
 
@@ -83,21 +84,14 @@ public:
 
     if ( (livello=="IST")  and  (cpu.stato!="EXECUTE-T1-LOW"))
             return;
-    if ( (livello=="FDE")  and  (cpu.stato!="EXECUTE-T1-LOW"))
-                return;
-    if ( (livello=="FDE")  and  (cpu.stato!="DECODE-T1-LOW"))
-                return;
-    if ( (livello=="FDE")  and  (cpu.stato!="FETCH-T1-LOW"))
-                return;
 
-//    if (! (  ( (livello=="IST")  and  (cpu.stato=="EXECUTE-T2-LOW") )
-//           or
-//          ( (livello=="FDE") and ( (cpu.stato=="EXECUTE-T2-LOW" )  or
-//                                 (cpu.stato=="DECODE-T2-LOW"  )  or
-//                                 (cpu.stato=="FETCH-T2-LOW"   )
-//                               )) ) )
-//          return;
 
+    if ( (livello=="FDE")  and
+           ( (cpu.stato!="EXECUTE-T1-LOW") and
+             (cpu.stato!="DECODE-T1-LOW")  and
+             (cpu.stato!="FETCH-T1-LOW")     )
+       )
+            return;
 
 
     // prima di visualizzare, attiva le viste cambiante nella transizione

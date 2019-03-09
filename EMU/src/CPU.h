@@ -92,15 +92,21 @@ public:
     while (1)
     {   //assert stato==F1
 
-      //FETCH*************************************
-      stato = "FETCH-T1-HIGH";
+//FETCH*************************************
 
+      stato = "FETCH-T1-HIGH";
+      step_start ();
 //      set_READING (PC); //TODO spostare a carico della mov read write , penso di si ? ?
 //      set_WRITING (AR);
         MOV (AR, PC);
+        step_done ();
 
-      step_done (); step_start ();
+
+///////////////////////////
+
       stato = "FETCH-T1-LOW";
+      step_start ();
+
 
       set_STANDBY (PC);    //ora?
 
@@ -109,14 +115,22 @@ public:
       set_high (MREQ);
       enable (MREQ);
 
-      step_done (); step_start ();
+      step_done ();
+
+///////////////////////////
+
       stato = "FETCH-T2-HIGH";
+      step_start ();
+
 
       // wait cicle....
 
       step_done ();
-      step_start ();
+
+///////////////////////////
+
       stato = "FETCH-T2-LOW";
+      step_start ();
       // pone DR = ram( AR )...
 
       //DECODE *****************************************
@@ -131,28 +145,34 @@ public:
       disable (MREQ);
 
       step_done ();
-      step_start ();
 
+///////////////////////////////
 
       stato = "DECODE-T1-LOW";
+      step_start ();
       mnemo = " INC A ";
       MOV (IR, DR);
       //EXECUTE *******************************************
-      step_done ();step_start ();
-      stato = "EXECUTE-T1-HIGH";
+      step_done ();
 
+      stato = "EXECUTE-T1-HIGH";
+      step_start ();
       // per ora nulla
 
       char appo = A.get_valore ();
       appo++;
       WRITE (A, appo);
       step_done ();
-      step_start ();
+
+
+
       stato = "EXECUTE-T1-LOW";
+      step_start ();
+
       set_STANDBY(A);
 
       step_done ();
-      step_start ();
+
       //****************************************************
     }
 
