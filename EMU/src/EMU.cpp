@@ -60,6 +60,16 @@ on_cpu_step_done()
 void
 on_cpu_step_start()
 {
+  //non sempre finito uno step devo disattivare le viste..
+  //
+  if ((livello == "IST") and (cpu.stato != "EXECUTE-T2-LOW"))
+      return;
+
+  if ((livello == "FDE")
+        and ((cpu.stato != "EXECUTE-T1-LOW") and (cpu.stato != "DECODE-T1-LOW")
+            and (cpu.stato != "FETCH-T2-LOW")))
+      return;
+
   //disattiva_le_viste_stato_precedente();
    while (! lista_componenti_attivi.empty() )
   {
@@ -79,6 +89,8 @@ on_cpu_step_start()
 void
 on_cpu_will_mod_reg(Registro & reg)
 {//TODO collauadare quando cpu ciclo è ben stabile livello FDE ..
+
+  cout <<endl<<"livello= "<<livello<<endl<<"on_cpu__will_mod_reg "<<endl;
 
   if (livello == "CLK")
   {
