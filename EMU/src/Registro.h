@@ -18,7 +18,6 @@ typedef enum Stato_registro
 
 class Registro : public CPU_component
 {
-
 public:
   Registro(string n)
       : CPU_component (n), valore (0), stato (STANDBY)
@@ -29,6 +28,11 @@ public:
   ~Registro()
   {
   }
+  sigc::signal<void> sig_reg_setted_to_reading;
+  sigc::signal<void> sig_reg_setted_to_writing;
+  sigc::signal<void> sig_reg_setted_to_standby;
+  sigc::signal<void> sig_reg_was_WRITE;
+  sigc::signal<void> sig_reg_was_READ;
 
   bool
   is_reading()
@@ -64,11 +68,13 @@ public:
   {
     stato = READING;
   }
+
   void
   set_writing()
   {
     stato = WRITING;
   }
+
   void
   set_standby()
   {

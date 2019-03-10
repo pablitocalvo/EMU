@@ -19,6 +19,10 @@ public:
       : pin (p)
   {
     set_s_vista ();
+
+    p.sig_pin_setted_to_HIGH.connect( sigc::mem_fun (this, &VistaPIN::set_s_vista) );
+    p.sig_pin_setted_to_LOW.connect( sigc::mem_fun (this, &VistaPIN::set_s_vista) );
+
   }
 
   virtual

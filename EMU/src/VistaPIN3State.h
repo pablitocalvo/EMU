@@ -18,6 +18,8 @@ public:
   VistaPIN3_State(PIN_3state & p)
       : VistaPIN (p)
   {
+    p.sig_pin_enabled.connect( sigc::mem_fun (this, &VistaPIN3_State::set_s_vista) );
+    p.sig_pin_disabled.connect( sigc::mem_fun (this, &VistaPIN3_State::set_s_vista) );;
   }
   ;
   virtual
@@ -26,7 +28,7 @@ public:
   }
 
   void
-  set_s_vista()
+  set_s_vista() //TODO inserire enable
   { //cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
 
     s_vista = pin.get_nome () + " " + pin_state_to_string (pin.get_value ());

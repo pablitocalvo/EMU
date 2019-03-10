@@ -17,12 +17,15 @@ public:
   {
     disable ();
   }
-  ;
+
   virtual
   ~PIN_3state()
   {
   }
-  ;
+
+  sigc::signal<void> sig_pin_enabled;
+  sigc::signal<void> sig_pin_disabled;
+
 private:
   Pin_3state_value en, output;
 
@@ -33,18 +36,21 @@ public:
   {
     en = PIN_HIGH;
     output = valore;
+
   }
   void
   disable()
   {
     en = PIN_LOW;
     output = PIN_Z;
+
   }
 
   Pin_3state_value
   get_value()
   {
     return ((en == PIN_HIGH) ? valore : PIN_Z);
+
   }
 
   bool

@@ -22,7 +22,9 @@ public:
   {
   }
 
-  sigc::signal<void> pin_toggled;
+  sigc::signal<void> sig_pin_setted_to_LOW;
+  sigc::signal<void> sig_pin_setted_to_HIGH;
+  sigc::signal<void> sig_pin_toggled; //TODO sevre?
 
 protected:
   Pin_3state_value valore;
@@ -42,7 +44,7 @@ public:
   virtual void
   set_low()
   {
-    valore = PIN_LOW;
+    valore = PIN_LOW ;
   }
   virtual void
   toggle()
@@ -55,7 +57,7 @@ public:
     {
       valore = PIN_HIGH;
     }
-    pin_toggled ();
+
   }
 
   virtual Pin_3state_value

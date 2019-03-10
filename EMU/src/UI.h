@@ -24,28 +24,14 @@ public:
       vCLK (VistaPIN (c.CLK)), vMREQ (VistaPIN3_State (c.MREQ)), vRD (
           VistaPIN3_State (c.RD))
 
-  { livello="FDE";
+  { livello="CLK";
 
-    cpu.cpu_state_changed.connect (sigc::mem_fun (this, &UI::on_cpu_state_changed));
+   // cpu.cpu_state_changed.connect (sigc::mem_fun (this, &UI::on_cpu_state_changed));
 
-    cpu.cpu_comp_will_mod.connect (sigc::mem_fun (this, &UI::on_cpu_comp_will_mod));
 
-    cpu.cpu_step_dones.connect (sigc::mem_fun (this, &UI::on_cpu_step_done));
-    cpu.cpu_step_starts.connect (sigc::mem_fun (this, &UI::on_cpu_step_start));
 
-//    cpu.cpu_reg_set_reading.connect (sigc::mem_fun (this, &UI::on_cpu_reg_mod));
-//    cpu.cpu_reg_set_writing.connect (sigc::mem_fun (this, &UI::on_cpu_reg_mod));
-//    cpu.cpu_reg_set_standby.connect (sigc::mem_fun (this, &UI::on_cpu_reg_mod));
-//
-//    cpu.cpu_reg_WRITE.connect (sigc::mem_fun (this, &UI::on_cpu_reg_mod));
-//    cpu.cpu_reg_READ.connect (sigc::mem_fun (this, &UI::on_cpu_reg_mod));
-
-//
-//    cpu.cpu_pin_writed_to_LOW.connect (sigc::mem_fun (this, &UI::on_cpu_pin_mod));
-//    cpu.cpu_pin_writed_to_HIGH.connect ( sigc::mem_fun (this, &UI::on_cpu_pin_mod));
-//
-//    cpu.cpu_pin_enabled.connect (sigc::mem_fun (this, &UI::on_cpu_pin_mod));
-//    cpu.cpu_pin_disabled.connect (sigc::mem_fun (this, &UI::on_cpu_pin_mod));
+     // cpu.sig_step_done.connect (sigc::mem_fun (this, &UI::on_cpu_step_done));
+   // cpu.cpu_step_starts.connect (sigc::mem_fun (this, &UI::on_cpu_step_start));
 
 
 
@@ -61,113 +47,90 @@ public:
 
   }
 
-  void
-  on_cpu_comp_will_mod(CPU_component & c)
-  {
-    //memorizza il componente ( &c ) e salva una copia ( c)
-    // per verificare se nel periodo è cambiato ...
-    componenti_attivi.push_back ({ & c, c });
-  }
 
 
 
-  void
-  on_cpu_step_done()
-  {   char c;
-      do
-      {
-        cin >> c;
-        // if (c == 't') break;
-
-      }
-      while (c != 't');
-
-    if ( (livello=="IST")  and  (cpu.stato!="EXECUTE-T1-LOW"))
-            return;
 
 
-    if ( (livello=="FDE")  and
-           ( (cpu.stato!="EXECUTE-T1-LOW") and
-             (cpu.stato!="DECODE-T1-LOW")  and
-             (cpu.stato!="FETCH-T1-LOW")     )
-       )
-            return;
 
-
-    // prima di visualizzare, attiva le viste cambiante nella transizione
-
-    while (!componenti_attivi.empty ())
-    {
-      Comp_Stato c=componenti_attivi.back();
-      componenti_attivi.pop_back ();
-
-      if ( ! c.c->stato_uguale_a(c.s)  )
-      {
-          //CPU_component * cp= c.c;
-          Vista * v=vista_del_comp[c.c];
-          v->attiva();
-          viste_attive.push_back (v);
-      }
-    }
-    visualizza ();
-  }
-
-  void
-  on_cpu_step_start()
-  {
-    //disattiva_le_viste_stato_precedente();
-    while (!viste_attive.empty ())
-       {
-         //cout<<(viste_attive.back()->vedi());
-         viste_attive.back ()->disattiva ();
-         viste_attive.pop_back ();
-
-       }
-  }
-
-  void
-  on_cpu_pin_mod(PIN & pin)
-  {
-//    VistaPIN * v = vista_del_pin[&pin];
-//    v->set_s_vista();
+//  void
+//  on_cpu_step_done()
 //
-//    //cout << "vista attivata ="<<v->vedi()<<endl;
-//    viste_attive.push_back (v);
-
-  }
-
-  void
-  on_cpu_reg_mod(Registro & reg)
-  {
-//    VistaRegistro * v = vista_del_reg[&reg];
-//    v->set_s_vista();
+//  {// prima di visualizzare, attiva le viste cambiante nella transizione
 //
-//    // cout << "vista attivata ="<<v->vedi()<<endl;
-//    viste_attive.push_back (v);
+////    while (!componenti_attivi.empty ())
+////    {
+////      Comp_Stato c=componenti_attivi.back();
+////      componenti_attivi.pop_back ();
+////
+////      if ( ! c.c->stato_uguale_a(c.s)  )
+////      {
+////          //CPU_component * cp= c.c;
+////          Vista * v=vista_del_comp[c.c];
+////          v->attiva();
+////          viste_attive.push_back (v);
+////      }
+////    }
+//    cout<<"ON_CPU__DA UI.............."<<endl;
+//    visualizza ();
+//  }
 
-  }
+//  void
+//  on_cpu_step_start()
+//  {cout<<"ui ON step star"<<endl;
+//    //disattiva_le_viste_stato_precedente();
+////    while (!viste_attive.empty ())
+////       {
+////         //cout<<(viste_attive.back()->vedi());
+////         viste_attive.back ()->disattiva ();
+////         viste_attive.pop_back ();
+////
+////       }
+//  }
 
-  void
-  disattiva_le_viste_stato_precedente()
-  {
-    // cout<<endl<<"disattiva le viste precedenti"<<endl;
-//        cout << "viste attive # "<<viste_attive.size()<< endl;
-//        cout << "viste attive vuota "<<viste_attive.empty()<< endl;
+//  void
+//  on_cpu_pin_mod(PIN & pin)
+//  {
+////    VistaPIN * v = vista_del_pin[&pin];
+////    v->set_s_vista();
+////
+////    //cout << "vista attivata ="<<v->vedi()<<endl;
+////    viste_attive.push_back (v);
+//
+//  }
 
+//  void
+//  on_cpu_reg_mod(Registro & reg)
+//  {
+////    VistaRegistro * v = vista_del_reg[&reg];
+////    v->set_s_vista();
+////
+////    // cout << "vista attivata ="<<v->vedi()<<endl;
+////    viste_attive.push_back (v);
+//
+//  }
 
+//  void
+//  disattiva_le_viste_stato_precedente()
+//  {
+//    // cout<<endl<<"disattiva le viste precedenti"<<endl;
+////        cout << "viste attive # "<<viste_attive.size()<< endl;
+////        cout << "viste attive vuota "<<viste_attive.empty()<< endl;
+//
+//
+//
+////        cout << "viste attive # "<<viste_attive.size()<< endl;
+////        cout << "viste attive vuota "<<viste_attive.empty()<< endl<< endl;
+//
+//  }
 
-//        cout << "viste attive # "<<viste_attive.size()<< endl;
-//        cout << "viste attive vuota "<<viste_attive.empty()<< endl<< endl;
-
-  }
-
-  void
+/*  void
   on_cpu_state_changed()
   {
 //    disattiva_le_viste_stato_precedente ();
 //    visualizza ();
 //
-    }
+    }*/
 
   void
   visualizza()
@@ -184,6 +147,13 @@ public:
 
     cout << endl<< endl;
 
+  }
+
+public:
+  Vista & vista_del_componente(CPU_component & comp)
+  {
+    Vista * v =vista_del_comp[&comp] ;
+    return *v;
   }
 
 public:
@@ -205,8 +175,13 @@ private:
     CPU_component s;
   };
 
-  list<Vista *> viste_attive;  //quali i rischi di un puntartore?
-  list<Comp_Stato> componenti_attivi;  //quali i rischi di un puntartore?
+//  list<Vista *> viste_attive;  //quali i rischi di un puntartore?
+//  list<Comp_Stato> componenti_attivi;  //quali i rischi di un puntartore?
+//
+
+  list<CPU_component * > lista_componenti_attivi;  //quali i rischi di un puntartore?
+
+
 
   std::map<CPU_component *, Vista *> vista_del_comp;
 
