@@ -25,6 +25,9 @@ public:
   {
     stato = "OFF";
     mnemo = " NOP ";
+
+   CLK.sig_pin_toggled.connect( sigc::mem_fun (this, &CPU::run) );
+
   }
 
   string stato, mnemo;
@@ -53,10 +56,16 @@ public:
   PIN_3state RD = PIN_3state ("RD");
 
 
+
+//  typedef  void (&Ref_to_step_function )() ;
+//
+//  Ref_to_step_function rf1 = &CPU::FETCH_T1_HIGH;
+
+
   void
   FETCH_T1_HIGH()
   { //FETCH*************************************
-    stato = "FETCH-T1-HIGH";
+    //stato = "FETCH-T1-HIGH";
     step_start ();
 
     MOV (AR, PC);
@@ -68,7 +77,7 @@ public:
  void
   FETCH_T1_LOW()
  {
-  stato = "FETCH-T1-LOW";
+  //stato = "FETCH-T1-LOW";
         step_start ();
 
 
@@ -83,7 +92,7 @@ public:
  }
 void FETCH_T2_HIGH()
 {
-       stato = "FETCH-T2-HIGH";
+
        step_start ();
 
 
@@ -94,7 +103,7 @@ void FETCH_T2_HIGH()
 
 void FETCH_T2_LOW()
 {
-      stato = "FETCH-T2-LOW";
+     // stato = "FETCH-T2-LOW";
        step_start ();
        // pone DR = ram( AR )...
 
@@ -105,7 +114,7 @@ void FETCH_T2_LOW()
 
 void DECODE_T1_HIGH()
 {
-      stato = "DECODE-T1-HIGH";
+     // stato = "DECODE-T1-HIGH";
        step_start ();
 
        set_STANDBY (AR);
@@ -122,7 +131,7 @@ void DECODE_T1_HIGH()
 
 void DECODE_T1_LOW ()
     {
-      stato = "DECODE-T1-LOW";
+      //stato = "DECODE-T1-LOW";
       step_start ();
 
 
@@ -138,7 +147,7 @@ void DECODE_T1_LOW ()
 void EXECUTE_T1_HIGH()
 {
 
-stato = "EXECUTE-T1-HIGH";
+//stato = "EXECUTE-T1-HIGH";
   step_start ();
        // per ora nulla
 
@@ -150,7 +159,7 @@ stato = "EXECUTE-T1-HIGH";
 
 void EXECUTE_T1_LOW()
 {
-stato = "EXECUTE-T1-LOW";
+//stato = "EXECUTE-T1-LOW";
       step_start ();
 
        set_STANDBY(A);
@@ -162,23 +171,35 @@ stato = "EXECUTE-T1-LOW";
   void
   run()
   {
-    while (1)
-    {   //assert stato=="FETCH-T1-HIGH";
+    if ((stato == "FETCH-T1-HIGH"))
+                   {FETCH_T1_HIGH ();stato ="FETCH-T1-LOW" ;}
+    else
+    if ((stato == "FETCH-T1-LOW"))
+                  {FETCH_T1_LOW (); stato="FETCH-T2-HIGH";}
+    else
+    if ((stato == "FETCH-T2-HIGH"))
+                  {FETCH_T2_HIGH ();stato="FETCH-T2-LOW";}
+    else
+    if ((stato == "FETCH-T2-LOW"))
+                  {FETCH_T2_LOW ();stato="DECODE_T1_HIGH";}
+    else
+    if ((stato == "DECODE_T1_HIGH"))
+                  {DECODE_T1_HIGH ();stato="DECODE_T1_LOW";}
 
-      FETCH_T1_HIGH ();
-      FETCH_T1_LOW ();
-      FETCH_T2_HIGH ();
-      FETCH_T2_LOW ();
-
-      DECODE_T1_HIGH ();
-      DECODE_T1_LOW ();
-
-      EXECUTE_T1_HIGH ();
-      EXECUTE_T1_LOW ();
-
-    }
+    else
+    if ((stato == "DECODE_T1_LOW"))
+                  {DECODE_T1_LOW ();stato="EXECUTE_T1_HIGH";}
+    else
+    if ((stato == "EXECUTE_T1_HIGH"))
+                  { EXECUTE_T1_HIGH ();stato="EXECUTE_T1_LOW";}
+    else
+    if ((stato == "EXECUTE_T1_LOW"))
+                  {EXECUTE_T1_LOW ();stato="FETCH-T1-HIGH";}
 
   }
+
+
+
 
   char
   READ(Registro & reg)

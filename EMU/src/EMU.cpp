@@ -37,14 +37,6 @@ salva_componente_attiva(CPU_component & c)
 void
 on_cpu_step_done()
 {
-  char c;
-  while (1)
-  {
-    cin >> c;
-    if (c == 't')
-      break;
-
-  };
 
   if ((livello == "IST") and (cpu.stato != "EXECUTE-T1-LOW"))
     return;
@@ -124,6 +116,11 @@ salva_componente_attiva (p);
 
 }
 
+
+void on_clk_toggle()
+{
+
+}
 int
 main()
 {
@@ -139,12 +136,22 @@ main()
   cpu.sig_step_done.connect (&on_cpu_step_done);
   cpu.sig_step_start.connect (&on_cpu_step_start);
 
-
-
+  cpu.setStato("FETCH-T1-HIGH");
   ui.visualizza();
 
+  char c;
+    while (1)
+    {
+      cin >> c;
+      if (c == 't')
+        cpu.run();
+      if (c == 'x')
+        break;
+    };
 
-  cpu.run ();
+
+
+ // cpu.run ();
 
   return 0;
 }
