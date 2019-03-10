@@ -57,7 +57,7 @@ public:
     {
       valore = PIN_HIGH;
     }
-
+    sig_pin_toggled();
   }
 
   virtual Pin_3state_value

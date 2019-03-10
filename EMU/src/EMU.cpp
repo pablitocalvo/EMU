@@ -37,32 +37,73 @@ salva_componente_attiva(CPU_component & c)
 void
 on_cpu_step_done()
 {
+  //cout<<"on_on_cpu_step_done() ";
+//cout <<endl<<"          livello= "<<livello<<endl;
+//cout <<endl<<"          stato ="<<cpu.stato<<"## "<<endl;
 
-  if ((livello == "IST") and (cpu.stato != "EXECUTE-T1-LOW"))
-    return;
+  //if(livello != "IST") cout <<endl<<"         xxxxxxxxxxxxxxxxxxxxxxxx"<<cpu.stato<<endl;
 
-  if ((livello == "FDE")
-      and ((cpu.stato != "EXECUTE-T1-LOW") and (cpu.stato != "DECODE-T1-LOW")
-          and (cpu.stato != "FETCH-T1-LOW")))
-    return;
-  cout << " cpu da EMU" << endl;
-  ui.visualizza ();
+  if (livello == "CLK")
+  {
+    //cout <<endl<<"         CCCCCCCCCCCCoppooooooooooooooCCCC"<<cpu.stato<<endl;
+      ui.visualizza ();return;
+  }
+
+  if((livello == "IST")&&(cpu.stato == "EXECUTE_T1_LOW"))
+  {
+    //cout <<endl<<"         ciaoooooooooooooooooo"<<cpu.stato<<endl;
+  ui.visualizza ();return;
+  }
+
+  if ((livello == "FDE") and (cpu.stato == "EXECUTE-T1-LOW"))
+  {
+    //cout <<endl<<"         ciaoooooooooooooooooo"<<cpu.stato<<endl;
+        ui.visualizza ();return;
+    }
+
+  if ((livello == "FDE")  and (cpu.stato == "DECODE-T1-LOW"))
+  {
+    //cout <<endl<<"         ciaoooooooooooooooooo"<<cpu.stato<<endl;
+           ui.visualizza ();return;
+       }
+
+
+  if ((livello == "FDE")  and (cpu.stato == "FETCH-T1-LOW"))
+    {
+    //cout <<endl<<"         ciaoooooooooooooooooo"<<cpu.stato<<endl;
+             ui.visualizza ();return;
+         }
+
 }
 
 void
 on_cpu_step_start()
 {
-  //non sempre finito uno step devo disattivare le viste..
+  cout << "on_cpu_step_start()" << endl;
+  cout <<endl<<"          livello= "<<livello<<endl;
+  cout <<endl<<"          stato ="<<cpu.stato<<"## "<<endl;
+ //non sempre finito uno step devo disattivare le viste..
   //
-  if ((livello == "IST") and (cpu.stato != "EXECUTE-T2-LOW"))
-      return;
+  if ((livello == "IST") and (cpu.stato != "FETCH-T1-HIGH"))
+  {
+      cout <<endl<<"on_cpu_step_start() ----------1111111 "<<cpu.stato<<endl;
+        ;return;
+    }
 
   if ((livello == "FDE")
         and ((cpu.stato != "EXECUTE-T1-LOW") and (cpu.stato != "DECODE-T1-LOW")
             and (cpu.stato != "FETCH-T2-LOW")))
-      return;
+  {
+        cout <<endl<<"on_cpu_step_start() ----------222222222 "<<cpu.stato<<endl;
+          ;return;
+   }
 
-  //disattiva_le_viste_stato_precedente();
+
+  cout <<endl<<"on_cpu_step_start() ----------33333333333 "<<cpu.stato<<endl;
+          ;
+
+
+//disattiva_le_viste_stato_precedente();
    while (! lista_componenti_attivi.empty() )
   {
 //         //cout<<(viste_attive.back()->vedi());
@@ -83,22 +124,23 @@ on_cpu_will_mod_reg(Registro & reg)
 {//TODO collauadare quando cpu ciclo è ben stabile livello FDE ..
 
   cout<<"on_cpu_will_mod_reg() ";
-  cout <<endl<<"livello= "<<livello<<endl;
+  cout <<endl<<"          livello= "<<livello<<endl;
+  cout <<endl<<"          stato ="<<cpu.stato<<"## "<<endl;
 
   if (livello == "CLK")
-  { cout<<"salvo attivo.."<<reg.get_nome()<<endl;
+  { cout<<"salvo attivo.1."<<reg.get_nome()<<endl;
     salva_componente_attiva ( reg );
 
   }
   else if (livello == "FDE")
-  {cout<<"salvo attivo.."<<reg.get_nome()<<endl;
+  {cout<<"salvo attivo.2."<<reg.get_nome()<<endl;
     salva_componente_attiva ( reg) ;
 
   }
   else // (livello=="IST)
   { cout<<cpu.stato<<endl;
-    if ((cpu.stato == "EXECUTE-T1-HIGH") or (cpu.stato == "EXECUTE-T2_LOW"))
-    { cout<<"salvo attivo.."<<reg.get_nome()<<endl;
+    if ((cpu.stato == "EXECUTE_T1_HIGH") or (cpu.stato == "EXECUTE_T1_LOW"))
+    { cout<<"salvo attivo.3."<<reg.get_nome()<<endl;
       salva_componente_attiva (reg);
     }
   }
@@ -144,7 +186,7 @@ main()
     {
       cin >> c;
       if (c == 't')
-        cpu.run();
+        cpu.CLK.toggle();
       if (c == 'x')
         break;
     };

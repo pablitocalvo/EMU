@@ -66,11 +66,11 @@ public:
   FETCH_T1_HIGH()
   { //FETCH*************************************
     //stato = "FETCH-T1-HIGH";
-    step_start ();
+    //step_start ();
 
     MOV (AR, PC);
 
-    step_done ();
+
 
 
   }
@@ -78,7 +78,7 @@ public:
   FETCH_T1_LOW()
  {
   //stato = "FETCH-T1-LOW";
-        step_start ();
+     //   step_start ();
 
 
         set_STANDBY (PC);    //ora?
@@ -88,34 +88,34 @@ public:
         set_high (MREQ);
         enable (MREQ);
 
-        step_done ();
+
  }
 void FETCH_T2_HIGH()
 {
 
-       step_start ();
+     //  step_start ();
 
 
        // wait cicle.... tempo per informare il bus indirizzi...
 
-       step_done ();
+      // step_done ();
 }
 
 void FETCH_T2_LOW()
 {
      // stato = "FETCH-T2-LOW";
-       step_start ();
+     //  step_start ();
        // pone DR = ram( AR )...
 
        //DECODE *****************************************
-       step_done ();
+
 }
 
 
 void DECODE_T1_HIGH()
 {
      // stato = "DECODE-T1-HIGH";
-       step_start ();
+     //  step_start ();
 
        set_STANDBY (AR);
 
@@ -124,7 +124,7 @@ void DECODE_T1_HIGH()
        set_low (MREQ);
        disable (MREQ);
 
-       step_done ();
+
 }
 
 
@@ -132,14 +132,14 @@ void DECODE_T1_HIGH()
 void DECODE_T1_LOW ()
     {
       //stato = "DECODE-T1-LOW";
-      step_start ();
+     // step_start ();
 
 
 
        mnemo = " INC A ";
        MOV (IR, DR);
 
-       step_done ();
+
     }
 
 
@@ -148,53 +148,53 @@ void EXECUTE_T1_HIGH()
 {
 
 //stato = "EXECUTE-T1-HIGH";
-  step_start ();
+ // step_start ();
        // per ora nulla
 
        char appo = A.get_valore ();
        appo++;
        WRITE (A, appo);
-       step_done ();
+
 }
 
 void EXECUTE_T1_LOW()
 {
 //stato = "EXECUTE-T1-LOW";
-      step_start ();
+   //   step_start ();
 
        set_STANDBY(A);
 
-       step_done ();
+
 }
 
 
   void
   run()
-  {
+  {step_start ();
     if ((stato == "FETCH-T1-HIGH"))
-                   {FETCH_T1_HIGH ();stato ="FETCH-T1-LOW" ;}
+                   {FETCH_T1_HIGH (); step_done ();stato ="FETCH-T1-LOW" ;}
     else
     if ((stato == "FETCH-T1-LOW"))
-                  {FETCH_T1_LOW (); stato="FETCH-T2-HIGH";}
+                  {FETCH_T1_LOW (); step_done (); stato="FETCH-T2-HIGH";}
     else
     if ((stato == "FETCH-T2-HIGH"))
-                  {FETCH_T2_HIGH ();stato="FETCH-T2-LOW";}
+                  {FETCH_T2_HIGH (); step_done ();stato="FETCH-T2-LOW";}
     else
     if ((stato == "FETCH-T2-LOW"))
-                  {FETCH_T2_LOW ();stato="DECODE_T1_HIGH";}
+                  {FETCH_T2_LOW (); step_done ();stato="DECODE_T1_HIGH";}
     else
     if ((stato == "DECODE_T1_HIGH"))
-                  {DECODE_T1_HIGH ();stato="DECODE_T1_LOW";}
+                  {DECODE_T1_HIGH (); step_done ();stato="DECODE_T1_LOW";}
 
     else
     if ((stato == "DECODE_T1_LOW"))
-                  {DECODE_T1_LOW ();stato="EXECUTE_T1_HIGH";}
+                  {DECODE_T1_LOW (); step_done ();stato="EXECUTE_T1_HIGH";}
     else
     if ((stato == "EXECUTE_T1_HIGH"))
-                  { EXECUTE_T1_HIGH ();stato="EXECUTE_T1_LOW";}
+                  { EXECUTE_T1_HIGH (); step_done ();stato="EXECUTE_T1_LOW";}
     else
     if ((stato == "EXECUTE_T1_LOW"))
-                  {EXECUTE_T1_LOW ();stato="FETCH-T1-HIGH";}
+                  {EXECUTE_T1_LOW (); step_done ();stato="FETCH-T1-HIGH";}
 
   }
 
