@@ -52,97 +52,130 @@ public:
   PIN_3state MREQ = PIN_3state ("MREQ");
   PIN_3state RD = PIN_3state ("RD");
 
+
+  void
+  FETCH_T1_HIGH()
+  { //FETCH*************************************
+    stato = "FETCH-T1-HIGH";
+    step_start ();
+
+    MOV (AR, PC);
+
+    step_done ();
+
+
+  }
+ void
+  FETCH_T1_LOW()
+ {
+  stato = "FETCH-T1-LOW";
+        step_start ();
+
+
+        set_STANDBY (PC);    //ora?
+
+        set_high (RD);      //segnala alla ram....
+        enable (RD);
+        set_high (MREQ);
+        enable (MREQ);
+
+        step_done ();
+ }
+void FETCH_T2_HIGH()
+{
+       stato = "FETCH-T2-HIGH";
+       step_start ();
+
+
+       // wait cicle.... tempo per informare il bus indirizzi...
+
+       step_done ();
+}
+
+void FETCH_T2_LOW()
+{
+      stato = "FETCH-T2-LOW";
+       step_start ();
+       // pone DR = ram( AR )...
+
+       //DECODE *****************************************
+       step_done ();
+}
+
+
+void DECODE_T1_HIGH()
+{
+      stato = "DECODE-T1-HIGH";
+       step_start ();
+
+       set_STANDBY (AR);
+
+       set_low (RD);
+       disable (RD);
+       set_low (MREQ);
+       disable (MREQ);
+
+       step_done ();
+}
+
+
+
+void DECODE_T1_LOW ()
+    {
+      stato = "DECODE-T1-LOW";
+      step_start ();
+
+
+
+       mnemo = " INC A ";
+       MOV (IR, DR);
+
+       step_done ();
+    }
+
+
+
+void EXECUTE_T1_HIGH()
+{
+
+stato = "EXECUTE-T1-HIGH";
+  step_start ();
+       // per ora nulla
+
+       char appo = A.get_valore ();
+       appo++;
+       WRITE (A, appo);
+       step_done ();
+}
+
+void EXECUTE_T1_LOW()
+{
+stato = "EXECUTE-T1-LOW";
+      step_start ();
+
+       set_STANDBY(A);
+
+       step_done ();
+}
+
+
   void
   run()
   {
     while (1)
     {   //assert stato=="FETCH-T1-HIGH";
 
-//FETCH*************************************
-      stato = "FETCH-T1-HIGH";
-      step_start ();
+      FETCH_T1_HIGH ();
+      FETCH_T1_LOW ();
+      FETCH_T2_HIGH ();
+      FETCH_T2_LOW ();
 
-      MOV (AR, PC);
+      DECODE_T1_HIGH ();
+      DECODE_T1_LOW ();
 
-      step_done ();
+      EXECUTE_T1_HIGH ();
+      EXECUTE_T1_LOW ();
 
-///////////////////////////
-
-      stato = "FETCH-T1-LOW";
-      step_start ();
-
-
-      set_STANDBY (PC);    //ora?
-
-      set_high (RD);
-      enable (RD);
-      set_high (MREQ);
-      enable (MREQ);
-
-      step_done ();
-
-///////////////////////////
-
-      stato = "FETCH-T2-HIGH";
-      step_start ();
-
-
-      // wait cicle....
-
-      step_done ();
-
-///////////////////////////
-
-      stato = "FETCH-T2-LOW";
-      step_start ();
-      // pone DR = ram( AR )...
-
-      //DECODE *****************************************
-      step_done ();
-
-////////////////////////////
-
-      step_start ();
-      stato = "DECODE-T1-HIGH";
-      set_STANDBY (AR);
-
-      set_low (RD);
-      disable (RD);
-      set_low (MREQ);
-      disable (MREQ);
-
-      step_done ();
-
-///////////////////////////////
-      step_start ();
-      stato = "DECODE-T1-LOW";
-
-      mnemo = " INC A ";
-      MOV (IR, DR);
-
-      step_done ();
-
-//EXECUTE *******************************************
-
-      stato = "EXECUTE-T1-HIGH";
-      step_start ();
-      // per ora nulla
-
-      char appo = A.get_valore ();
-      appo++;
-      WRITE (A, appo);
-      step_done ();
-
-
-////////////////////////////////////////////////
-      stato = "EXECUTE-T1-LOW";
-      step_start ();
-
-      set_STANDBY(A);
-
-      step_done ();
-
-      //****************************************************
     }
 
   }
@@ -209,15 +242,12 @@ public:
      p.set_high ();
     p.sig_pin_setted_to_HIGH();
    }
-   void
+     void
    set_low(PIN & p)
    {cpu_will_mod_pin(p);
      p.set_low ();
      p.sig_pin_setted_to_LOW();
    }
-
-
-
    void
    enable(PIN_3state & p)
    { cpu_will_mod_pin(p);
@@ -231,6 +261,10 @@ public:
      p.sig_pin_disabled();
 
    }
+
+
+
+
 
 public:
   void
