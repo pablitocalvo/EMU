@@ -30,49 +30,15 @@ public:
   string stato, mnemo;
 
   sigc::signal<void> cpu_state_changed;
-  sigc::signal<void> cpu_step_dones;
-  sigc::signal<void> cpu_step_starts;
+  sigc::signal<void> sig_step_done;
+  sigc::signal<void> sig_step_start;
 
-  sigc::signal<void, CPU_component &> cpu_comp_will_mod;
+  sigc::signal<void, CPU_component &> cpu_will_mod_comp;
+  sigc::signal<void, Registro &> cpu_will_mod_reg;
+  sigc::signal<void, PIN &> cpu_will_mod_pin;
 
-  sigc::signal<void, Registro &> cpu_reg_set_reading;
-  sigc::signal<void, Registro &> cpu_reg_set_writing;
-  sigc::signal<void, Registro &> cpu_reg_set_standby;
 
-  sigc::signal<void, Registro &> cpu_reg_WRITE;
-  sigc::signal<void, Registro &> cpu_reg_READ;
 
-  sigc::signal<void, PIN &> cpu_pin_writed_to_LOW;
-  sigc::signal<void, PIN &> cpu_pin_writed_to_HIGH;
-
-  sigc::signal<void, PIN_3state &> cpu_pin_enabled;
-  sigc::signal<void, PIN_3state &> cpu_pin_disabled;
-
-  void
-  set_high(PIN & p)
-  { cpu_comp_will_mod(p);
-    p.set_high ();
-   // cpu_pin_writed_to_HIGH (p);
-  }
-  void
-  set_low(PIN & p)
-  {cpu_comp_will_mod(p);
-    p.set_low ();
-    //cpu_pin_writed_to_LOW (p);
-  }
-
-  void
-  enable(PIN_3state & p)
-  { cpu_comp_will_mod(p);
-    p.enable ();
-   // cpu_pin_enabled (p);
-  }
-  void
-  disable(PIN_3state & p)
-  { cpu_comp_will_mod(p);
-    p.disable ();
-   // cpu_pin_disabled (p);
-  }
 
   Registro A = Registro ("A");
   Registro B = Registro ("B");
@@ -90,17 +56,15 @@ public:
   run()
   {
     while (1)
-    {   //assert stato==F1
+    {   //assert stato=="FETCH-T1-HIGH";
 
 //FETCH*************************************
-
       stato = "FETCH-T1-HIGH";
       step_start ();
-//      set_READING (PC); //TODO spostare a carico della mov read write , penso di si ? ?
-//      set_WRITING (AR);
-        MOV (AR, PC);
-        step_done ();
 
+      MOV (AR, PC);
+
+      step_done ();
 
 ///////////////////////////
 
@@ -135,6 +99,9 @@ public:
 
       //DECODE *****************************************
       step_done ();
+
+////////////////////////////
+
       step_start ();
       stato = "DECODE-T1-HIGH";
       set_STANDBY (AR);
@@ -147,13 +114,15 @@ public:
       step_done ();
 
 ///////////////////////////////
-
-      stato = "DECODE-T1-LOW";
       step_start ();
+      stato = "DECODE-T1-LOW";
+
       mnemo = " INC A ";
       MOV (IR, DR);
-      //EXECUTE *******************************************
+
       step_done ();
+
+//EXECUTE *******************************************
 
       stato = "EXECUTE-T1-HIGH";
       step_start ();
@@ -165,7 +134,7 @@ public:
       step_done ();
 
 
-
+////////////////////////////////////////////////
       stato = "EXECUTE-T1-LOW";
       step_start ();
 
@@ -179,19 +148,23 @@ public:
   }
 
   char
-  READ(Registro & reg) const
-  { cpu_comp_will_mod(reg);
-    reg.set_reading ();
-    cpu_reg_READ (reg);
+  READ(Registro & reg)
+  {
+   // cpu_will_mod_reg(reg);//VIENE CHIAMATA ANCHE DA ...
+
+    set_READING(reg);
+
     return reg.get_valore ();
   }
 
   void
   WRITE(Registro & reg, char valore)
-  { cpu_comp_will_mod(reg);
-    reg.set_writing ();
-    reg.set_valore (valore);
-    cpu_reg_WRITE (reg);
+  { //cpu_will_mod_reg(reg); //VIENE CHIAMATA ANCHE DA ...
+    set_WRITING(reg);
+
+
+    reg.set_valore(valore);
+
   }
 
   void
@@ -203,22 +176,61 @@ public:
   void
   set_READING(Registro & reg)
   {
-    cpu_comp_will_mod(reg);
+    cpu_will_mod_reg(reg);
+
     reg.set_reading ();
-    cpu_reg_set_reading (reg);
+
+    reg.sig_reg_setted_to_reading();
+
   }
   void
   set_WRITING(Registro & reg)
-  { cpu_comp_will_mod(reg);
+  {
+    cpu_will_mod_reg(reg);
+
     reg.set_writing ();
-    cpu_reg_set_writing (reg);
+
+    reg.sig_reg_setted_to_writing();
+
   }
   void
   set_STANDBY(Registro & reg)
-  { cpu_comp_will_mod(reg);
+  { cpu_will_mod_reg(reg);
+
     reg.set_standby ();
-    cpu_reg_set_standby (reg);
+
+    reg.sig_reg_setted_to_standby();
+
   }
+
+  void
+   set_high(PIN & p)
+   { cpu_will_mod_pin(p);
+     p.set_high ();
+    p.sig_pin_setted_to_HIGH();
+   }
+   void
+   set_low(PIN & p)
+   {cpu_will_mod_pin(p);
+     p.set_low ();
+     p.sig_pin_setted_to_LOW();
+   }
+
+
+
+   void
+   enable(PIN_3state & p)
+   { cpu_will_mod_pin(p);
+     p.enable ();
+    p.sig_pin_enabled();
+   }
+   void
+   disable(PIN_3state & p)
+   { cpu_will_mod_pin(p);
+     p.disable ();
+     p.sig_pin_disabled();
+
+   }
 
 public:
   void
@@ -230,13 +242,13 @@ public:
   void
   step_done()
   {
-    cpu_step_dones();
+    sig_step_done();
   }
 
   void
   step_start()
   {
-    cpu_step_starts ();
+    sig_step_start ();
   }
 
 };
