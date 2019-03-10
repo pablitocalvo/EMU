@@ -90,26 +90,27 @@ void
 on_cpu_will_mod_reg(Registro & reg)
 {//TODO collauadare quando cpu ciclo è ben stabile livello FDE ..
 
-  cout <<endl<<"livello= "<<livello<<endl<<"on_cpu__will_mod_reg "<<endl;
+  cout<<"on_cpu_will_mod_reg() ";
+  cout <<endl<<"livello= "<<livello<<endl;
 
   if (livello == "CLK")
-  {
+  { cout<<"salvo attivo.."<<reg.get_nome()<<endl;
     salva_componente_attiva ( reg );
 
   }
   else if (livello == "FDE")
-  {
+  {cout<<"salvo attivo.."<<reg.get_nome()<<endl;
     salva_componente_attiva ( reg) ;
 
   }
-  else // (livello=="FDE
-  { cout<<cpu.stato;
+  else // (livello=="IST)
+  { cout<<cpu.stato<<endl;
     if ((cpu.stato == "EXECUTE-T1-HIGH") or (cpu.stato == "EXECUTE-T2_LOW"))
-    { cout<<"salvo attivo.."<<reg.get_nome();
+    { cout<<"salvo attivo.."<<reg.get_nome()<<endl;
       salva_componente_attiva (reg);
     }
   }
-
+  cout <<endl;
 }
 
 void
