@@ -24,7 +24,7 @@ public:
 
   sigc::signal<void> sig_pin_setted_to_LOW;
   sigc::signal<void> sig_pin_setted_to_HIGH;
-  sigc::signal<void> sig_pin_toggled; //TODO sevre?
+  sigc::signal<void> sig_pin_toggled;
 
 protected:
   Pin_3state_value valore;

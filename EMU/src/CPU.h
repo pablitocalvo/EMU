@@ -23,7 +23,7 @@ class CPU
 public:
   CPU()
   {
-    stato = "OFF";
+    stato = "OFF"; //TODO basta stringhe!!!!!!!!!!!!!!!!!!!!!!!1
     mnemo = " NOP ";
 
    CLK.sig_pin_toggled.connect( sigc::mem_fun (this, &CPU::run) );
@@ -169,7 +169,7 @@ void EXECUTE_T1_LOW()
 
 
   void
-  run()
+  run() //TODO ottimizzare ....
   {step_start ();
     if ((stato == "FETCH-T1-HIGH"))
                    {FETCH_T1_HIGH (); step_done ();stato ="FETCH-T1-LOW" ;}
