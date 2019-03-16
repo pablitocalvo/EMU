@@ -13,6 +13,7 @@
 #include <string>
 using namespace std;
 
+#include "common.h"
 #include "Registro.h"
 
 #include "PIN.h"
@@ -23,14 +24,15 @@ class CPU
 public:
   CPU()
   {
-    stato = "OFF"; //TODO basta stringhe!!!!!!!!!!!!!!!!!!!!!!!1
+    stato = FETCH_T1_HIGH; //TODO basta stringhe!!!!!!!!!!!!!!!!!!!!!!!1
     mnemo = " NOP ";
 
    CLK.sig_pin_toggled.connect( sigc::mem_fun (this, &CPU::run) );
 
   }
 
-  string stato, mnemo;
+  stati_cpu stato;
+  string mnemo;
 
   sigc::signal<void> cpu_state_changed;
   sigc::signal<void> sig_step_done;
@@ -63,7 +65,7 @@ public:
 
 
   void
-  FETCH_T1_HIGH()
+  DO_FETCH_T1_HIGH()
   { //FETCH*************************************
     //stato = "FETCH-T1-HIGH";
     //step_start ();
@@ -75,7 +77,7 @@ public:
 
   }
  void
-  FETCH_T1_LOW()
+ DO_FETCH_T1_LOW()
  {
   //stato = "FETCH-T1-LOW";
      //   step_start ();
@@ -90,7 +92,7 @@ public:
 
 
  }
-void FETCH_T2_HIGH()
+void  DO_FETCH_T2_HIGH()
 {
 
      //  step_start ();
@@ -101,7 +103,7 @@ void FETCH_T2_HIGH()
       // step_done ();
 }
 
-void FETCH_T2_LOW()
+void  DO_FETCH_T2_LOW()
 {
      // stato = "FETCH-T2-LOW";
      //  step_start ();
@@ -112,7 +114,7 @@ void FETCH_T2_LOW()
 }
 
 
-void DECODE_T1_HIGH()
+void  DO_DECODE_T1_HIGH()
 {
      // stato = "DECODE-T1-HIGH";
      //  step_start ();
@@ -129,7 +131,7 @@ void DECODE_T1_HIGH()
 
 
 
-void DECODE_T1_LOW ()
+void  DO_DECODE_T1_LOW ()
     {
       //stato = "DECODE-T1-LOW";
      // step_start ();
@@ -144,7 +146,7 @@ void DECODE_T1_LOW ()
 
 
 
-void EXECUTE_T1_HIGH()
+void DO_EXECUTE_T1_HIGH()
 {
 
 //stato = "EXECUTE-T1-HIGH";
@@ -157,7 +159,7 @@ void EXECUTE_T1_HIGH()
 
 }
 
-void EXECUTE_T1_LOW()
+void  DO_EXECUTE_T1_LOW()
 {
 //stato = "EXECUTE-T1-LOW";
    //   step_start ();
@@ -171,30 +173,29 @@ void EXECUTE_T1_LOW()
   void
   run() //TODO ottimizzare ....
   {step_start ();
-    if ((stato == "FETCH-T1-HIGH"))
-                   {FETCH_T1_HIGH (); step_done ();stato ="FETCH-T1-LOW" ;}
+    if ((stato == FETCH_T1_HIGH))
+                   { DO_FETCH_T1_HIGH (); step_done ();stato =FETCH_T1_LOW ;}
     else
-    if ((stato == "FETCH-T1-LOW"))
-                  {FETCH_T1_LOW (); step_done (); stato="FETCH-T2-HIGH";}
+    if ((stato == FETCH_T1_LOW))
+                  { DO_FETCH_T1_LOW (); step_done (); stato=FETCH_T2_HIGH;}
     else
-    if ((stato == "FETCH-T2-HIGH"))
-                  {FETCH_T2_HIGH (); step_done ();stato="FETCH-T2-LOW";}
+    if ((stato == FETCH_T2_HIGH))
+                  { DO_FETCH_T2_HIGH (); step_done ();stato=FETCH_T2_LOW;}
     else
-    if ((stato == "FETCH-T2-LOW"))
-                  {FETCH_T2_LOW (); step_done ();stato="DECODE_T1_HIGH";}
+    if ((stato == FETCH_T2_LOW))
+                  { DO_FETCH_T2_LOW (); step_done ();stato=DECODE_T1_HIGH;}
     else
-    if ((stato == "DECODE_T1_HIGH"))
-                  {DECODE_T1_HIGH (); step_done ();stato="DECODE_T1_LOW";}
-
+    if ((stato == DECODE_T1_HIGH))
+                  { DO_DECODE_T1_HIGH (); step_done ();stato=DECODE_T1_LOW;}
     else
-    if ((stato == "DECODE_T1_LOW"))
-                  {DECODE_T1_LOW (); step_done ();stato="EXECUTE_T1_HIGH";}
+    if ((stato == DECODE_T1_LOW))
+                  { DO_DECODE_T1_LOW (); step_done ();stato=EXECUTE_T1_HIGH;}
     else
-    if ((stato == "EXECUTE_T1_HIGH"))
-                  { EXECUTE_T1_HIGH (); step_done ();stato="EXECUTE_T1_LOW";}
+    if ((stato == EXECUTE_T1_HIGH))
+                  {  DO_EXECUTE_T1_HIGH (); step_done ();stato=EXECUTE_T1_LOW;}
     else
-    if ((stato == "EXECUTE_T1_LOW"))
-                  {EXECUTE_T1_LOW (); step_done ();stato="FETCH-T1-HIGH";}
+    if ((stato == EXECUTE_T1_LOW))
+                  { DO_EXECUTE_T1_LOW (); step_done ();stato=FETCH_T1_HIGH;}
 
   }
 
@@ -289,7 +290,7 @@ void EXECUTE_T1_LOW()
 
 public:
   void
-  setStato(string s)
+  setStato(stati_cpu s)
   {
     stato = s;
   }

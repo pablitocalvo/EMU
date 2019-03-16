@@ -132,10 +132,25 @@ public:
 //
     }*/
 
+
+  string to_string ( stati_cpu s)
+  {
+    switch(s) {
+      case FETCH_T1_HIGH : return "FETCH_T1_HIGH";
+      case FETCH_T1_LOW : return "FETCH_T1_LOW";
+      case FETCH_T2_HIGH : return "FETCH_T2_HIGH";
+      case FETCH_T2_LOW : return "FETCH_T2_LOW";
+      case DECODE_T1_HIGH : return "DECODE_T1_HIGH";
+      case DECODE_T1_LOW :return "DECODE_T1_LOW";
+      case EXECUTE_T1_HIGH : return "EXECUTE_T1_HIGH";
+      case EXECUTE_T1_LOW : return "EXECUTE_T1_LOW" ;
+     }
+  }
+
   void
   visualizza()
   {  //cout<<pin_state_to_string (cpu.CLK.get_value())<<endl;;
-    cout << "STATO " << cpu.stato << "   " << vCLK.vedi () << vMREQ.vedi ()
+    cout << "STATO " << to_string(cpu.stato) << "   " << vCLK.vedi () << vMREQ.vedi ()
         << vRD.vedi ()
         << endl;
 

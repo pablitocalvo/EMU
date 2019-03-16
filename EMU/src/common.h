@@ -18,6 +18,15 @@ typedef enum Pin_3state_value
   PIN_LOW, PIN_Z, PIN_HIGH
 };
 
+
+typedef enum stati_cpu  {FETCH_T1_HIGH,FETCH_T1_LOW,
+  FETCH_T2_HIGH,
+  FETCH_T2_LOW,DECODE_T1_HIGH,
+  DECODE_T1_LOW,EXECUTE_T1_HIGH,EXECUTE_T1_LOW
+
+};
+
+
 string
 pin_state_to_string(Pin_3state_value stato)
 {

@@ -23,7 +23,7 @@ using namespace std;
 
 CPU cpu = CPU ();
 UI ui = UI (cpu);
-string livello="IST";
+string livello="CLK";
 
 list<CPU_component * > lista_componenti_attivi;  //quali i rischi di un puntartore?
 void
@@ -49,26 +49,26 @@ on_cpu_step_done()
       ui.visualizza ();return;
   }
 
-  if((livello == "IST")&&(cpu.stato == "EXECUTE_T1_LOW"))
+  if((livello == "IST")&&(cpu.stato == EXECUTE_T1_LOW))
   {
     //cout <<endl<<"         ciaoooooooooooooooooo"<<cpu.stato<<endl;
   ui.visualizza ();return;
   }
 
-  if ((livello == "FDE") and (cpu.stato == "EXECUTE-T1-LOW"))
+  if ((livello == "FDE") and (cpu.stato == EXECUTE_T1_LOW))
   {
     //cout <<endl<<"         ciaoooooooooooooooooo"<<cpu.stato<<endl;
         ui.visualizza ();return;
     }
 
-  if ((livello == "FDE")  and (cpu.stato == "DECODE-T1-LOW"))
+  if ((livello == "FDE")  and (cpu.stato == DECODE_T1_LOW))
   {
     //cout <<endl<<"         ciaoooooooooooooooooo"<<cpu.stato<<endl;
            ui.visualizza ();return;
        }
 
 
-  if ((livello == "FDE")  and (cpu.stato == "FETCH-T1-LOW"))
+  if ((livello == "FDE")  and (cpu.stato == FETCH_T1_LOW))
     {
     //cout <<endl<<"         ciaoooooooooooooooooo"<<cpu.stato<<endl;
              ui.visualizza ();return;
@@ -79,27 +79,27 @@ on_cpu_step_done()
 void
 on_cpu_step_start()
 {
-  cout << "on_cpu_step_start()" << endl;
-  cout <<endl<<"          livello= "<<livello<<endl;
-  cout <<endl<<"          stato ="<<cpu.stato<<"## "<<endl;
- //non sempre finito uno step devo disattivare le viste..
+//  cout << "on_cpu_step_start()" << endl;
+//  cout <<endl<<"          livello= "<<livello<<endl;
+//  cout <<endl<<"          stato ="<<cpu.stato<<"## "<<endl;
+// //non sempre finito uno step devo disattivare le viste..
   //
-  if ((livello == "IST") and (cpu.stato != "FETCH-T1-HIGH"))
+  if ((livello == "IST") and (cpu.stato != FETCH_T1_HIGH))
   {
-      cout <<endl<<"on_cpu_step_start() ----------1111111 "<<cpu.stato<<endl;
+//      cout <<endl<<"on_cpu_step_start() ----------1111111 "<<cpu.stato<<endl;
         ;return;
     }
 
   if ((livello == "FDE")
-        and ((cpu.stato != "EXECUTE-T1-LOW") and (cpu.stato != "DECODE-T1-LOW")
-            and (cpu.stato != "FETCH-T2-LOW")))
+        and ((cpu.stato != EXECUTE_T1_LOW) and (cpu.stato != DECODE_T1_LOW)
+            and (cpu.stato != FETCH_T2_LOW)))
   {
-        cout <<endl<<"on_cpu_step_start() ----------222222222 "<<cpu.stato<<endl;
+//        cout <<endl<<"on_cpu_step_start() ----------222222222 "<<cpu.stato<<endl;
           ;return;
    }
 
 
-  cout <<endl<<"on_cpu_step_start() ----------33333333333 "<<cpu.stato<<endl;
+//  cout <<endl<<"on_cpu_step_start() ----------33333333333 "<<cpu.stato<<endl;
           ;
 
 
@@ -110,7 +110,7 @@ on_cpu_step_start()
 
      CPU_component * comp=lista_componenti_attivi.back();
      Vista & v = ui.vista_del_componente(*comp);
-     cout << "distattivo" << v.vedi() << endl;
+//     cout << "distattivo" << v.vedi() << endl;
      v.disattiva();
 
         lista_componenti_attivi.pop_back ();
@@ -123,24 +123,28 @@ void
 on_cpu_will_mod_reg(Registro & reg)
 {//TODO collauadare quando cpu ciclo è ben stabile livello FDE ..
 
-  cout<<"on_cpu_will_mod_reg() ";
-  cout <<endl<<"          livello= "<<livello<<endl;
-  cout <<endl<<"          stato ="<<cpu.stato<<"## "<<endl;
+//  cout<<"on_cpu_will_mod_reg() ";
+//  cout <<endl<<"          livello= "<<livello<<endl;
+//  cout <<endl<<"          stato ="<<cpu.stato<<"## "<<endl;
 
   if (livello == "CLK")
-  { cout<<"salvo attivo.1."<<reg.get_nome()<<endl;
+  {
+//    cout<<"salvo attivo.1."<<reg.get_nome()<<endl;
     salva_componente_attiva ( reg );
 
   }
   else if (livello == "FDE")
-  {cout<<"salvo attivo.2."<<reg.get_nome()<<endl;
+  {
+//    cout<<"salvo attivo.2."<<reg.get_nome()<<endl;
     salva_componente_attiva ( reg) ;
 
   }
   else // (livello=="IST)
-  { cout<<cpu.stato<<endl;
-    if ((cpu.stato == "EXECUTE_T1_HIGH") or (cpu.stato == "EXECUTE_T1_LOW"))
-    { cout<<"salvo attivo.3."<<reg.get_nome()<<endl;
+  {
+//    cout<<cpu.stato<<endl;
+    if ((cpu.stato == EXECUTE_T1_HIGH) or (cpu.stato == EXECUTE_T1_LOW))
+    {
+//      cout<<"salvo attivo.3."<<reg.get_nome()<<endl;
       salva_componente_attiva (reg);
     }
   }
@@ -178,7 +182,7 @@ main()
   cpu.sig_step_done.connect (&on_cpu_step_done);
   cpu.sig_step_start.connect (&on_cpu_step_start);
 
-  cpu.setStato("FETCH-T1-HIGH");
+  cpu.setStato(FETCH_T1_HIGH);
   ui.visualizza();
 
   char c;
