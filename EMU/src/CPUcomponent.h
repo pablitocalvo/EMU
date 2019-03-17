@@ -27,6 +27,7 @@ public:
 protected:
 
   string nome;
+
 public:
   string
   get_nome()
@@ -35,7 +36,12 @@ public:
   }
 
   virtual bool
-  stato_uguale_a(CPU_component & c){cout<<"ERRORE !!!!!!!!"<<endl; return true;};
+  stato_uguale_a(CPU_component & c)
+  {
+    cout << "ERRORE !!!!!!!!" << endl;
+    return true;
+  }
+
 
 };
 

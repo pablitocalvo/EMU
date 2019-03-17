@@ -23,7 +23,7 @@ using namespace std;
 
 CPU cpu = CPU ();
 UI ui = UI (cpu);
-string livello = "CLK";
+string livello = "IST";
 
 list<CPU_component *> lista_componenti_attivi; //quali i rischi di un puntartore?
 void

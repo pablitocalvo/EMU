@@ -19,26 +19,32 @@ public:
       : reg (r)
   {
     set_s_vista ();
-    r.sig_reg_setted_to_reading.connect( sigc::mem_fun (this, &VistaRegistro::set_s_vista) );
-    r.sig_reg_setted_to_writing.connect( sigc::mem_fun (this, &VistaRegistro::set_s_vista) );
-    r.sig_reg_setted_to_standby.connect( sigc::mem_fun (this, &VistaRegistro::set_s_vista) );
+    r.sig_reg_setted_to_reading.connect (
+        sigc::mem_fun (this, &VistaRegistro::set_s_vista));
+    r.sig_reg_setted_to_writing.connect (
+        sigc::mem_fun (this, &VistaRegistro::set_s_vista));
+    r.sig_reg_setted_to_standby.connect (
+        sigc::mem_fun (this, &VistaRegistro::set_s_vista));
 
-    r.sig_reg_was_READ.connect( sigc::mem_fun (this, &VistaRegistro::on_reg_WRITE));
-    r.sig_reg_was_WRITE.connect( sigc::mem_fun (this, &VistaRegistro::on_reg_READ));
-
-
+    r.sig_reg_was_READ.connect (
+        sigc::mem_fun (this, &VistaRegistro::on_reg_WRITE));
+    r.sig_reg_was_WRITE.connect (
+        sigc::mem_fun (this, &VistaRegistro::on_reg_READ));
   }
 
   ~VistaRegistro()
   {
   }
 
-  void prova(){};
+  void
+  prova()
+  {
+  }
+  ;
 
   void
   set_s_vista()
-  { //cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
-
+  {
     string s_stato = reg.is_reading () ? "r " : reg.is_writing () ? "w " : "- ";
 
     s_vista = s_stato + reg.get_nome () + " = "
@@ -53,13 +59,32 @@ public:
 private:
   Registro & reg;
 
-  void on_reg_set_reading() {set_s_vista();}
-  void on_reg_set_writing(){set_s_vista();}
-  void on_reg_set_standby(){set_s_vista();}
+  void
+  on_reg_set_reading()
+  {
+    set_s_vista ();
+  }
+  void
+  on_reg_set_writing()
+  {
+    set_s_vista ();
+  }
+  void
+  on_reg_set_standby()
+  {
+    set_s_vista ();
+  }
 
-  void on_reg_WRITE(){set_s_vista();}
-  void on_reg_READ(){set_s_vista();}
-
+  void
+  on_reg_WRITE()
+  {
+    set_s_vista ();
+  }
+  void
+  on_reg_READ()
+  {
+    set_s_vista ();
+  }
 
 };
 

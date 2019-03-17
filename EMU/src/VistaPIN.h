@@ -20,8 +20,10 @@ public:
   {
     set_s_vista ();
 
-    p.sig_pin_setted_to_HIGH.connect( sigc::mem_fun (this, &VistaPIN::set_s_vista) );
-    p.sig_pin_setted_to_LOW.connect( sigc::mem_fun (this, &VistaPIN::set_s_vista) );
+    p.sig_pin_setted_to_HIGH.connect (
+        sigc::mem_fun (this, &VistaPIN::set_s_vista));
+    p.sig_pin_setted_to_LOW.connect (
+        sigc::mem_fun (this, &VistaPIN::set_s_vista));
 
   }
 
@@ -33,8 +35,7 @@ public:
   void
   virtual
   set_s_vista()
-  { //cout<< "set_s_vista.."+pin.get_nome () + pin_state_to_string (pin.get_value ())<<endl;
-
+  {
     s_vista = pin.get_nome () + " " + pin_state_to_string (pin.get_value ());
     if (is_attiva ())
       s_vista = " [ " + s_vista + " ] ";

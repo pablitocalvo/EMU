@@ -56,13 +56,13 @@ public:
   bool
   stato_uguale_a(CPU_component &c)
   {
-     return stato_uguale_a ((PIN_3state &) c);
+    return stato_uguale_a ((PIN_3state &) c);
   }
 
   bool
   stato_uguale_a(PIN_3state & p)
   {
-    return ((valore == p.valore) && (en==p.en) );
+    return ((valore == p.valore) && (en == p.en));
   }
 
 };

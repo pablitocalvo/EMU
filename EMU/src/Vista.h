@@ -52,13 +52,14 @@ public:
   }
 
   virtual void
-  set_s_vista(){s_vista="";}
+  set_s_vista()
+  {
+    s_vista = "";
+  }
 
 protected:
   bool vista_attiva;
   string s_vista;
-
-
 
 };
 

@@ -57,49 +57,29 @@ public:
   PIN_3state MREQ = PIN_3state ("MREQ");
   PIN_3state RD = PIN_3state ("RD");
 
-
-
-//  typedef  void (&Ref_to_step_function )() ;
-//
-//  Ref_to_step_function rf1 = &CPU::FETCH_T1_HIGH;
-
-
   void
   DO_FETCH_T1_HIGH()
   { //FETCH*************************************
-    //stato = "FETCH-T1-HIGH";
-    //step_start ();
 
     MOV (AR, PC);
-
-
-
-
   }
+
  void
  DO_FETCH_T1_LOW()
  {
   //stato = "FETCH-T1-LOW";
-     //   step_start ();
-
 
         set_STANDBY (PC);    //ora?
-
         set_high (RD);      //segnala alla ram....
         enable (RD);
         set_high (MREQ);
         enable (MREQ);
-
-
  }
-void  DO_FETCH_T2_HIGH()
+
+ void  DO_FETCH_T2_HIGH()
 {
-
      //  step_start ();
-
-
        // wait cicle.... tempo per informare il bus indirizzi...
-
       // step_done ();
 }
 
@@ -165,8 +145,6 @@ void  DO_EXECUTE_T1_LOW()
    //   step_start ();
 
        set_STANDBY(A);
-
-
 }
 
 
@@ -205,10 +183,7 @@ void  DO_EXECUTE_T1_LOW()
   char
   READ(Registro & reg)
   {
-   // cpu_will_mod_reg(reg);//VIENE CHIAMATA ANCHE DA ...
-
     set_READING(reg);
-
     return reg.get_valore ();
   }
 

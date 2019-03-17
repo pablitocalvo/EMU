@@ -44,7 +44,7 @@ public:
   virtual void
   set_low()
   {
-    valore = PIN_LOW ;
+    valore = PIN_LOW;
   }
   virtual void
   toggle()
@@ -57,7 +57,7 @@ public:
     {
       valore = PIN_HIGH;
     }
-    sig_pin_toggled();
+    sig_pin_toggled ();
   }
 
   virtual Pin_3state_value
@@ -66,18 +66,17 @@ public:
     return (valore);
   }
 
- virtual  bool
-    stato_uguale_a(CPU_component &c)
-    {
-      return stato_uguale_a ((PIN &) c);
-    }
+  virtual bool
+  stato_uguale_a(CPU_component &c)
+  {
+    return stato_uguale_a ((PIN &) c);
+  }
 
-    bool
-    stato_uguale_a(PIN & p)
-    {
-      return ((valore == p.valore) );
-    }
-
+  bool
+  stato_uguale_a(PIN & p)
+  {
+    return ((valore == p.valore));
+  }
 
 };
 
