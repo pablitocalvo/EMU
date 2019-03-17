@@ -25,9 +25,9 @@ CPU cpu = CPU ();
 UI ui = UI (cpu);
 string livello = "IST";
 
-list<CPU_component *> lista_componenti_attivi; //quali i rischi di un puntartore?
+list<EMU_component *> lista_componenti_attivi; //quali i rischi di un puntartore?
 void
-salva_componente_attiva(CPU_component & c)
+salva_componente_attiva(EMU_component & c)
 {
   Vista & v = ui.vista_del_componente (c);
   v.attiva ();
@@ -89,7 +89,7 @@ on_cpu_step_start()
   while (!lista_componenti_attivi.empty ())
   {
 
-    CPU_component * comp = lista_componenti_attivi.back ();
+    EMU_component * comp = lista_componenti_attivi.back ();
     Vista & v = ui.vista_del_componente (*comp);
     v.disattiva ();
 

@@ -5,21 +5,21 @@
  *      Author: paolo
  */
 
-#ifndef CPUCOMPONENT_H_
-#define CPUCOMPONENT_H_
+#ifndef EMUCOMPONENT_H_
+#define EMUCOMPONENT_H_
 
 #include "common.h"
 
-class CPU_component
+class EMU_component
 {
 public:
-  CPU_component(string n)
+  EMU_component(string n)
       : nome (n)
   {
   }
   ;
   virtual
-  ~CPU_component()
+  ~EMU_component()
   {
   }
   ;
@@ -36,7 +36,7 @@ public:
   }
 
   virtual bool
-  stato_uguale_a(CPU_component & c)
+  stato_uguale_a(EMU_component & c)
   {
     cout << "ERRORE !!!!!!!!" << endl;
     return true;
@@ -45,4 +45,4 @@ public:
 
 };
 
-#endif /* CPUCOMPONENT_H_ */
+#endif /* EMUCOMPONENT_H_ */

@@ -6,10 +6,11 @@
 
 #include <list>
 #include <map>
+
+#include "EMUcomponent.h"
 #include "Vista.h"
 #include "VistaPIN.h"
 #include "VistaPIN3State.h"
-#include "CPUcomponent.h"
 
 using namespace std;
 
@@ -80,7 +81,7 @@ public:
 
 public:
   Vista &
-  vista_del_componente(CPU_component & comp)
+  vista_del_componente(EMU_component & comp)
   {
     Vista * v = vista_del_comp[&comp];
     return *v;
@@ -99,8 +100,8 @@ public:
   VistaPIN3_State vRD;
 private:
 
-  list<CPU_component *> lista_componenti_attivi; //quali i rischi di un puntartore?
-  std::map<CPU_component *, Vista *> vista_del_comp;
+  list<EMU_component *> lista_componenti_attivi; //quali i rischi di un puntartore?
+  std::map<EMU_component *, Vista *> vista_del_comp;
 
 };
 

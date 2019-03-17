@@ -38,7 +38,7 @@ public:
   sigc::signal<void> sig_step_done;
   sigc::signal<void> sig_step_start;
 
-  sigc::signal<void, CPU_component &> cpu_will_mod_comp;
+  sigc::signal<void, EMU_component &> cpu_will_mod_comp;
   sigc::signal<void, Registro &> cpu_will_mod_reg;
   sigc::signal<void, PIN &> cpu_will_mod_pin;
 

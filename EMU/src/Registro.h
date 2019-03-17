@@ -9,18 +9,18 @@
 #define REGISTRO_H_
 
 #include "common.h"
-#include "CPUcomponent.h"
+#include "EMUcomponent.h"
 
 typedef enum Stato_registro
 {
   READING, STANDBY, WRITING
 };
 
-class Registro : public CPU_component
+class Registro : public EMU_component
 {
 public:
   Registro(string n)
-      : CPU_component (n), valore (0), stato (STANDBY)
+      : EMU_component (n), valore (0), stato (STANDBY)
   {
   }
   ;
@@ -82,7 +82,7 @@ public:
   }
 
   bool
-  stato_uguale_a(CPU_component &c)
+  stato_uguale_a(EMU_component &c)
   {
     return stato_uguale_a ((Registro &) c);
   }

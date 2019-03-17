@@ -54,7 +54,7 @@ public:
   }
 
   bool
-  stato_uguale_a(CPU_component &c)
+  stato_uguale_a(EMU_component &c)
   {
     return stato_uguale_a ((PIN_3state &) c);
   }

@@ -8,12 +8,12 @@
 #ifndef PIN_H_
 #define PIN_H_
 #include "common.h"
-#include "CPUcomponent.h"
-class PIN : public CPU_component
+#include "EMUcomponent.h"
+class PIN : public EMU_component
 {
 public:
   PIN(string n)
-      : CPU_component (n), valore (PIN_LOW)
+      : EMU_component (n), valore (PIN_LOW)
   {
   }
 
@@ -67,7 +67,7 @@ public:
   }
 
   virtual bool
-  stato_uguale_a(CPU_component &c)
+  stato_uguale_a(EMU_component &c)
   {
     return stato_uguale_a ((PIN &) c);
   }
