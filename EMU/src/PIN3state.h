@@ -46,6 +46,7 @@ public:
 
   }
 
+  bool is_disabled(){ return ( en == PIN_LOW) ;)
   Pin_3state_value
   get_value()
   {

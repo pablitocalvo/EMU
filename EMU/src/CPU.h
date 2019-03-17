@@ -85,8 +85,6 @@ public:
 
 void  DO_FETCH_T2_LOW()
 {
-     // stato = "FETCH-T2-LOW";
-     //  step_start ();
        // pone DR = ram( AR )...
 
        //DECODE *****************************************
@@ -150,7 +148,8 @@ void  DO_EXECUTE_T1_LOW()
 
   void
   run() //TODO ottimizzare ....
-  {step_start ();
+  {
+    step_start ();
     if ((stato == FETCH_T1_HIGH))
                    { DO_FETCH_T1_HIGH (); step_done ();stato =FETCH_T1_LOW ;}
     else

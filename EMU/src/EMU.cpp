@@ -19,9 +19,10 @@ using namespace std;
 
 #include "CPU.h"
 #include "UI.h"
+#include "RAM.h"
 #include "common.h"
 
-CPU cpu = CPU ();
+CPU cpu = CPU (); RAM ram("RAM");
 UI ui = UI (cpu);
 string livello = "IST";
 
@@ -138,6 +139,24 @@ on_clk_toggle()
 {
 
 }
+
+void on_MREQ_enabled()
+{
+// deve abilitare la RAM ??
+  if ( cpu.RD.is_disabled())
+
+  if ( cpu.RD.is_high())
+    { // legge dalla memoria ...
+    }
+  else if ( cpu.RD.is_disabled())
+  {
+
+  }
+
+};
+
+
+
 int
 main()
 {
@@ -148,8 +167,12 @@ main()
   cpu.cpu_will_mod_reg.connect (&on_cpu_will_mod_reg);
 
   cpu.cpu_will_mod_pin.connect (&on_cpu_will_mod_pin);
+
   cpu.sig_step_done.connect (&on_cpu_step_done);
   cpu.sig_step_start.connect (&on_cpu_step_start);
+
+  cpu.MREQ.sig_pin_enabled.connect(&on_MREQ_enabled);
+
 
   cpu.setStato (FETCH_T1_HIGH);
   ui.visualizza ();
