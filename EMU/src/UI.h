@@ -24,16 +24,7 @@ public:
       vCLK (VistaPIN (c.CLK)), vMREQ (VistaPIN3_State (c.MREQ)), vRD (
           VistaPIN3_State (c.RD))
 
-  { livello="CLK";
-
-   // cpu.cpu_state_changed.connect (sigc::mem_fun (this, &UI::on_cpu_state_changed));
-
-
-
-     // cpu.sig_step_done.connect (sigc::mem_fun (this, &UI::on_cpu_step_done));
-   // cpu.cpu_step_starts.connect (sigc::mem_fun (this, &UI::on_cpu_step_start));
-
-
+  {
 
     vista_del_comp[&cpu.A] = &vA;
     vista_del_comp[&cpu.PC] = &vPC;
@@ -47,112 +38,35 @@ public:
 
   }
 
-
-
-
-
-
-
-//  void
-//  on_cpu_step_done()
-//
-//  {// prima di visualizzare, attiva le viste cambiante nella transizione
-//
-////    while (!componenti_attivi.empty ())
-////    {
-////      Comp_Stato c=componenti_attivi.back();
-////      componenti_attivi.pop_back ();
-////
-////      if ( ! c.c->stato_uguale_a(c.s)  )
-////      {
-////          //CPU_component * cp= c.c;
-////          Vista * v=vista_del_comp[c.c];
-////          v->attiva();
-////          viste_attive.push_back (v);
-////      }
-////    }
-//    cout<<"ON_CPU__DA UI.............."<<endl;
-//    visualizza ();
-//  }
-
-//  void
-//  on_cpu_step_start()
-//  {cout<<"ui ON step star"<<endl;
-//    //disattiva_le_viste_stato_precedente();
-////    while (!viste_attive.empty ())
-////       {
-////         //cout<<(viste_attive.back()->vedi());
-////         viste_attive.back ()->disattiva ();
-////         viste_attive.pop_back ();
-////
-////       }
-//  }
-
-//  void
-//  on_cpu_pin_mod(PIN & pin)
-//  {
-////    VistaPIN * v = vista_del_pin[&pin];
-////    v->set_s_vista();
-////
-////    //cout << "vista attivata ="<<v->vedi()<<endl;
-////    viste_attive.push_back (v);
-//
-//  }
-
-//  void
-//  on_cpu_reg_mod(Registro & reg)
-//  {
-////    VistaRegistro * v = vista_del_reg[&reg];
-////    v->set_s_vista();
-////
-////    // cout << "vista attivata ="<<v->vedi()<<endl;
-////    viste_attive.push_back (v);
-//
-//  }
-
-//  void
-//  disattiva_le_viste_stato_precedente()
-//  {
-//    // cout<<endl<<"disattiva le viste precedenti"<<endl;
-////        cout << "viste attive # "<<viste_attive.size()<< endl;
-////        cout << "viste attive vuota "<<viste_attive.empty()<< endl;
-//
-//
-//
-////        cout << "viste attive # "<<viste_attive.size()<< endl;
-////        cout << "viste attive vuota "<<viste_attive.empty()<< endl<< endl;
-//
-//  }
-
-/*  void
-  on_cpu_state_changed()
+  string
+  to_string(stati_cpu s)
   {
-//    disattiva_le_viste_stato_precedente ();
-//    visualizza ();
-//
-    }*/
-
-
-  string to_string ( stati_cpu s)
-  {
-    switch(s) {
-      case FETCH_T1_HIGH : return "FETCH_T1_HIGH";
-      case FETCH_T1_LOW : return "FETCH_T1_LOW";
-      case FETCH_T2_HIGH : return "FETCH_T2_HIGH";
-      case FETCH_T2_LOW : return "FETCH_T2_LOW";
-      case DECODE_T1_HIGH : return "DECODE_T1_HIGH";
-      case DECODE_T1_LOW :return "DECODE_T1_LOW";
-      case EXECUTE_T1_HIGH : return "EXECUTE_T1_HIGH";
-      case EXECUTE_T1_LOW : return "EXECUTE_T1_LOW" ;
-     }
+    switch (s)
+      {
+      case FETCH_T1_HIGH:
+        return "FETCH_T1_HIGH";
+      case FETCH_T1_LOW:
+        return "FETCH_T1_LOW";
+      case FETCH_T2_HIGH:
+        return "FETCH_T2_HIGH";
+      case FETCH_T2_LOW:
+        return "FETCH_T2_LOW";
+      case DECODE_T1_HIGH:
+        return "DECODE_T1_HIGH";
+      case DECODE_T1_LOW:
+        return "DECODE_T1_LOW";
+      case EXECUTE_T1_HIGH:
+        return "EXECUTE_T1_HIGH";
+      case EXECUTE_T1_LOW:
+        return "EXECUTE_T1_LOW";
+      }
   }
 
   void
   visualizza()
   {  //cout<<pin_state_to_string (cpu.CLK.get_value())<<endl;;
-    cout << "STATO " << to_string(cpu.stato) << "   " << vCLK.vedi () << vMREQ.vedi ()
-        << vRD.vedi ()
-        << endl;
+    cout << "STATO " << to_string (cpu.stato) << "   " << vCLK.vedi ()
+        << vMREQ.vedi () << vRD.vedi () << endl;
 
     cout << vA.vedi () << "  ";
     cout << vPC.vedi () << "  ";
@@ -160,14 +74,15 @@ public:
     cout << vAR.vedi () << "  ";
     cout << vIR.vedi () << "  ";
 
-    cout << endl<< endl;
+    cout << endl << endl;
 
   }
 
 public:
-  Vista & vista_del_componente(CPU_component & comp)
+  Vista &
+  vista_del_componente(CPU_component & comp)
   {
-    Vista * v =vista_del_comp[&comp] ;
+    Vista * v = vista_del_comp[&comp];
     return *v;
   }
 
@@ -183,25 +98,9 @@ public:
   VistaPIN3_State vMREQ;
   VistaPIN3_State vRD;
 private:
-  string livello ;
-  struct Comp_Stato
-  {
-    CPU_component * c;
-    CPU_component s;
-  };
 
-//  list<Vista *> viste_attive;  //quali i rischi di un puntartore?
-//  list<Comp_Stato> componenti_attivi;  //quali i rischi di un puntartore?
-//
-
-  list<CPU_component * > lista_componenti_attivi;  //quali i rischi di un puntartore?
-
-
-
+  list<CPU_component *> lista_componenti_attivi; //quali i rischi di un puntartore?
   std::map<CPU_component *, Vista *> vista_del_comp;
-
-//  std::map<Registro *, VistaRegistro *> vista_del_reg;
-//  std::map<PIN *, VistaPIN *> vista_del_pin;
 
 };
 
