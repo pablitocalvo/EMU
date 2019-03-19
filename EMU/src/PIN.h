@@ -31,10 +31,15 @@ protected:
 
 public:
   bool
-  is_high()
-  {
-    return valore == PIN_HIGH;
-  }
+    is_high()
+    {
+      return valore == PIN_HIGH;
+    }
+  bool
+    is_low()
+    {
+      return valore == PIN_LOW;
+    }
 
   virtual void
   set_high()

@@ -209,7 +209,7 @@ void  DO_EXECUTE_T1_LOW()
 
     reg.set_reading ();
 
-    reg.sig_reg_setted_to_reading();
+    reg.sig_setted_to_reading();
 
   }
   void
@@ -219,7 +219,7 @@ void  DO_EXECUTE_T1_LOW()
 
     reg.set_writing ();
 
-    reg.sig_reg_setted_to_writing();
+    reg.sig_setted_to_writing();
 
   }
   void
@@ -228,7 +228,7 @@ void  DO_EXECUTE_T1_LOW()
 
     reg.set_standby ();
 
-    reg.sig_reg_setted_to_standby();
+    reg.sig_setted_to_standby();
 
   }
 

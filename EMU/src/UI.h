@@ -11,19 +11,20 @@
 #include "Vista.h"
 #include "VistaPIN.h"
 #include "VistaPIN3State.h"
-
+#include "BUS.h"
 using namespace std;
 
 class UI
 {
 public:
-  UI(CPU & c)
+  UI(CPU & c, BUS & bus)
       : cpu (c), vA (VistaRegistro (c.A)), vPC (VistaRegistro (c.PC)), vDR (
           VistaRegistro (c.DR)), vIR (VistaRegistro (c.IR)), vAR (
           VistaRegistro (c.AR)),
 
       vCLK (VistaPIN (c.CLK)), vMREQ (VistaPIN3_State (c.MREQ)), vRD (
-          VistaPIN3_State (c.RD))
+      VistaPIN3_State (c.RD)),
+      vBUS(VistaRegistro(bus))
 
   {
 
@@ -36,6 +37,8 @@ public:
     vista_del_comp[&cpu.CLK] = &vCLK;
     vista_del_comp[&cpu.RD] = &vRD;
     vista_del_comp[&cpu.MREQ] = &vMREQ;
+
+    vista_del_comp[&bus] = &vBUS;
 
   }
 
@@ -98,8 +101,10 @@ public:
   VistaPIN vCLK;
   VistaPIN3_State vMREQ;
   VistaPIN3_State vRD;
-private:
 
+  VistaRegistro vBUS;
+private:
+//TODO cambiare in reference ....
   list<EMU_component *> lista_componenti_attivi; //quali i rischi di un puntartore?
   std::map<EMU_component *, Vista *> vista_del_comp;
 

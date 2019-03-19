@@ -28,11 +28,11 @@ public:
   ~Registro()
   {
   }
-  sigc::signal<void> sig_reg_setted_to_reading;
-  sigc::signal<void> sig_reg_setted_to_writing;
-  sigc::signal<void> sig_reg_setted_to_standby;
-  sigc::signal<void> sig_reg_was_WRITE;
-  sigc::signal<void> sig_reg_was_READ;
+  sigc::signal<void> sig_setted_to_reading;
+  sigc::signal<void> sig_setted_to_writing;
+  sigc::signal<void> sig_setted_to_standby;
+  sigc::signal<void> sig_was_WRITE;
+  sigc::signal<void> sig_was_READ;
 
   bool
   is_reading()

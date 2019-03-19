@@ -21,10 +21,16 @@ using namespace std;
 #include "UI.h"
 #include "RAM.h"
 #include "common.h"
+#include "BUS.h"
 
-CPU cpu = CPU (); RAM ram("RAM");
-UI ui = UI (cpu);
-string livello = "IST";
+CPU cpu = CPU ();// RAM ram("RAM");
+BUS bus=BUS("BUS DATI");
+
+
+UI ui = UI (cpu,bus);
+
+
+string livello = "CLK";
 
 list<EMU_component *> lista_componenti_attivi; //quali i rischi di un puntartore?
 void
@@ -140,20 +146,20 @@ on_clk_toggle()
 
 }
 
-void on_MREQ_enabled()
-{
-// deve abilitare la RAM ??
-  if ( cpu.RD.is_disabled())
-
-  if ( cpu.RD.is_high())
-    { // legge dalla memoria ...
-    }
-  else if ( cpu.RD.is_disabled())
-  {
-
-  }
-
-};
+//void on_MREQ_enabled()
+//{
+//// deve abilitare la RAM ??
+//  if ( cpu.RD.is_disabled())
+//
+//  if ( cpu.RD.is_high())
+//    { // legge dalla memoria ...
+//    }
+//  else if ( cpu.RD.is_disabled())
+//  {
+//
+//  }
+//
+//};
 
 
 
@@ -171,8 +177,10 @@ main()
   cpu.sig_step_done.connect (&on_cpu_step_done);
   cpu.sig_step_start.connect (&on_cpu_step_start);
 
-  cpu.MREQ.sig_pin_enabled.connect(&on_MREQ_enabled);
+  //cpu.MREQ.sig_pin_enabled.connect(&on_MREQ_enabled);
 
+
+  bus.connect(cpu.RD,cpu.DR);
 
   cpu.setStato (FETCH_T1_HIGH);
   ui.visualizza ();

@@ -19,16 +19,16 @@ public:
       : reg (r)
   {
     set_s_vista ();
-    r.sig_reg_setted_to_reading.connect (
+    r.sig_setted_to_reading.connect (
         sigc::mem_fun (this, &VistaRegistro::set_s_vista));
-    r.sig_reg_setted_to_writing.connect (
+    r.sig_setted_to_writing.connect (
         sigc::mem_fun (this, &VistaRegistro::set_s_vista));
-    r.sig_reg_setted_to_standby.connect (
+    r.sig_setted_to_standby.connect (
         sigc::mem_fun (this, &VistaRegistro::set_s_vista));
 
-    r.sig_reg_was_READ.connect (
+    r.sig_was_READ.connect (
         sigc::mem_fun (this, &VistaRegistro::on_reg_WRITE));
-    r.sig_reg_was_WRITE.connect (
+    r.sig_was_WRITE.connect (
         sigc::mem_fun (this, &VistaRegistro::on_reg_READ));
   }
 
